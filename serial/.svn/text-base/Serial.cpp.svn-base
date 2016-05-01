@@ -1,0 +1,11 @@
+#include "Serial.h"
+
+map<string, vector<char* (*)(Serial*, char*)> > Serial::zzz_mapSerialFunc;
+map<string, vector<char* (*)(Serial*, char*)> > Serial::zzz_mapUnserialFunc;
+map<string, vector<unsigned long (*)(Serial*)> > Serial::zzz_mapSizeFunc;
+
+#ifdef XML_ENCD_DECD
+map<string, vector<void (*)(Serial*, XMLWriter&)> > Serial::zzz_mapSerialXMLFunc;
+map<string, vector<bool (*)(Serial*, XMLNodeInfo&)> > Serial::zzz_mapUnserialXMLFunc;
+map<string, vector<void (*)(XMLWriter&)> > Serial::zzz_mapMakeXMLDocFunc;
+#endif

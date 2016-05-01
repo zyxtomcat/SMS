@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/IMServer/!svn/ver/133/trunk/imserver/serial
+END
+SerialDecoder.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/IMServer/!svn/ver/133/trunk/imserver/serial/SerialDecoder.h
+END
+ToStrFunc.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/IMServer/!svn/ver/133/trunk/imserver/serial/ToStrFunc.h
+END
