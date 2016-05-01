@@ -54,7 +54,6 @@ string BinToHexString(const string& str, bool bUpCase = true);
 string HexStringToBin(const string& str);
 
 string MakeMD5(const string &src);
-string MakeMD516(const string &src);
 string MakeSHA1(const string &src);
 
 void rc4_encrypt(const unsigned char *key, int keylen, unsigned char *data, int datalen);
