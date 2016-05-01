@@ -26,9 +26,9 @@ private:
 	bool initAgent();
 	ISMGAgent* getAgent(const std::string &SP_Id);
 
-	void HandleSMSSubmitResp();
-	void HandleSMSStatusReport();
-	void HandleSMSDeliver();
+	void HandleSMSSubmitResp(ISMGAgent* pAgent);
+	void HandleSMSStatusReport(ISMGAgent* pAgent);
+	void HandleSMSDeliver(ISMGAgent* pAgent);
 private:
 	DBService *m_dbService;
 	ISMGManager *m_pIM;

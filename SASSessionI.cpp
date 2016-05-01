@@ -220,15 +220,15 @@ void SASSessionI::QuerySMS(const ::std::string& request, ::std::string& response
 
 }
 
-void SASSessionI::HandleSMSSubmitResp() {
+void SASSessionI::HandleSMSSubmitResp(ISMGAgent* pAgent) {
 
 }
 
-void SASSessionI::HandleSMSStatusReport() {
+void SASSessionI::HandleSMSStatusReport(ISMGAgent* pAgent) {
 
 }
 
-void SASSessionI::HandleSMSDeliver() {
+void SASSessionI::HandleSMSDeliver(ISMGAgent* pAgent) {
 
 }
 

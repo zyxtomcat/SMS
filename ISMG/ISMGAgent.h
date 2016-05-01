@@ -6,7 +6,7 @@
 
 class ISMGAgent;
 
-typedef EventDef<void(ISMGAgent* pAgent, int nErrorCode)> EventOnSMSSubmitResp;
+typedef EventDef<void(ISMGAgent* pAgent)> EventOnSMSSubmitResp;
 typedef EventDef<void(ISMGAgent* pAgent)> EventOnSMSStatusReport;
 typedef EventDef<void(ISMGAgent* pAgent)> EventOnSMSDeliver;
 
