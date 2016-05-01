@@ -157,6 +157,7 @@ void CMPPAgent::OnTCPDisConnect(TCPClient *pClient) {
 	if (pClient != &m_tcpClient) return;
 
 	MYLOG_INFO("CMPPAgent disconnect to server. server_host:%s, server_port:%d, SP_Id:%s", m_ISMGInfo.server_host.c_str(), m_ISMGInfo.server_port, m_ISMGInfo.SP_Id.c_str());
+	ClearCheckAndSendBuffer();
 	m_timerConnectActive.Stop();
 	m_isLogin = false;
 	m_tcpClient.Open();
@@ -231,6 +232,35 @@ void CMPPAgent::CheckResponse(CMPP *pCMPPResponse) {
 				delete it->second;
 			}
 		}
+	}
+}
+
+void CMPPAgent::ClearCheckAndSendBuffer() {
+	{
+		std::map<U32, RespCheckItem*>::iterator it;
+		LockerGuard lockGuard(m_lockerCheckResp);
+		it = m_mapCheckResp.begin();
+		for (; it != m_mapCheckResp.end(); ++it) {
+			CMPP *pCMPP = it->second->pCMPP;
+			if (pCMPP) {
+				m_mapCheckResp.erase(it);
+				delete pCMPP;
+				delete it->second;
+			}
+		}
+		m_mapCheckResp.clear();
+	}
+
+	{
+		std::list<CMPP*>::iterator it;
+		LockerGuard lockGuard(m_lockerNotSend);
+		for (it = m_NotSendQueue.begin(); it != m_NotSendQueue.end(); ++it) {
+			CMPP *pCMPP = *it;
+			if (pCMPP) {
+				delete pCMPP;
+			}
+		}
+		m_NotSendQueue.clear();
 	}
 }
 

@@ -75,9 +75,11 @@ private:
 
 	void CheckResponse(CMPP *pCMPP);
 
+	void ClearCheckAndSendBuffer();
+
 private:
 	static bool m_isCMPPRegistr;
-	
+
 	TCPClient m_tcpClient;
 	std::string m_strBuffer;
 
