@@ -6,6 +6,8 @@
 #include "ErrorCode.h"
 #include "SerialDecoder.h"
 
+static bool CMPPAgent::m_isCMPPRegistr = false;
+
 const U8 HEARTBEAT_ACTIVED_CHECK_INTERVAL = 3 * 60; 	//Heartbeat active check interval
 const U8 RESPONSE_TIMEOUT = 60;							//Response timeout
 const U8 MAX_RETRANS_TIMES = 3;								//Retransmission times
@@ -87,7 +89,11 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 }
 
 bool CMPPAgent::init() {
-	RegisterCMPP();
+	if (false == m_isCMPPRegistr) {
+		RegisterCMPP();
+		m_isCMPPRegistr = true;
+	}
+	
 
 	EVENT_BIND(m_tcpClient.OnTCPRecvData, this, CMPPAgent::OnRecvData);
 	EVENT_BIND(m_tcpClient.OnTCPConnect, this, CMPPAgent::OnTCPConnect);
