@@ -104,7 +104,7 @@ unsigned long NTOH(unsigned long VALUE)
 {
 	if (is_littlendbian())
 	{
-		return NTOH(VALUE);
+		return HTON(VALUE);
 	}
 	else
 	{
@@ -117,7 +117,7 @@ unsigned int NTOH(unsigned int VALUE)
 {
 	if (is_littlendbian())
 	{
-		return NTOH(VALUE);
+		return HTON(VALUE);
 	}
 	else
 	{
@@ -129,7 +129,7 @@ template<>
 unsigned long long NTOH(unsigned long long VALUE) {
 	if (is_littlendbian())
 	{
-		return NTOH(VALUE);
+		return HTON(VALUE);
 	}
 	else
 	{
