@@ -60,7 +60,7 @@ U32 CMPP::getSeq() {
 
 char* CMPP::BeforeSerial(char* pData) {
 	CMPPHeader *pHeader = (CMPPHeader *)pData;
-	pHeader->total_length = HTON(m_ulDecodeSize);
+	pHeader->total_length = HTON(m_ulSerialSize);
 	pHeader->command_id = HTON(GetKey());
 	pHeader->sequence_id = HTON(seq);
 	return pData + sizeof(CMPPHeader);
