@@ -194,7 +194,7 @@ void CMPPAgent::Login() {
 	authSource += "000000000";
 	authSource += m_ISMGInfo.getISMGParamValue("shared_secret");
 	authSource += GetTimestampNoYear();
-	std::string md5 = MakeMD5(authSource);
+	std::string md5 = MakeMD516(authSource);
 	strncpy(login->authenticatorSource, md5.c_str(), sizeof(login->authenticatorSource));
 	m_authSource = md5;
 
