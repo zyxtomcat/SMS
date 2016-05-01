@@ -7,7 +7,7 @@
 //        sintUsed=0 表示数据不对
 //        sintUsed=-1 表示数据不完全
 //返回值 >0表示数据对，sintUsed表示该数据长度
-//unsigned short TerminalProtocol::CheckData(const char* pData, unsigned long ulLen, SINT& sintUsed)
+//unsigned short TerminalProtocol::CheckData(const char* pData, unsigned int ulLen, SINT& sintUsed)
 
 enum DecodeResult
 {
@@ -22,7 +22,7 @@ struct DecoderInfo
 {
     DecodeResult drCode;
     const char* pData;
-    unsigned long ulLen;
+    unsigned int ulLen;
     T* pT;
 };
 
@@ -30,7 +30,7 @@ struct PreDecoderInfo
 {
     DecodeResult drCode;
     const char* pData;
-    unsigned long ulLen;
+    unsigned int ulLen;
     unsigned int usKey;
 };
 
@@ -38,15 +38,15 @@ template<typename T>
 class SerialDecoder
 {
 public:
-    static void Decode(const char* szBuf, unsigned long ulLen, list<DecoderInfo<T> >& lstDecoderInfo)
+    static void Decode(const char* szBuf, unsigned int ulLen, list<DecoderInfo<T> >& lstDecoderInfo)
     {
         DecoderInfo<T> di;
         ClearDecoderInfo(di);
         const char* pCurrent = szBuf;
-        unsigned long ulLeaveLen = ulLen;
+        unsigned int ulLeaveLen = ulLen;
         while (ulLeaveLen >= T::MIN_SERIAL_LENGTH)
         {
-            unsigned long ulUsedLen = 0;
+            unsigned int ulUsedLen = 0;
             T* pT = Decode(pCurrent, ulLeaveLen, ulUsedLen);
             //success
             if (pT != NULL)
@@ -133,13 +133,13 @@ public:
         }
     }
 
-    static void PreDecode(const char* szBuf, unsigned long ulLen, list<PreDecoderInfo>& lstPreDecoderInfo)
+    static void PreDecode(const char* szBuf, unsigned int ulLen, list<PreDecoderInfo>& lstPreDecoderInfo)
     {
         PreDecoderInfo pdi;
         memset(&pdi, 0, sizeof(PreDecoderInfo));
 
         const char* pCurrent = szBuf;
-        unsigned long ulLeaveLen = ulLen;
+        unsigned int ulLeaveLen = ulLen;
         while (ulLeaveLen >= T::MIN_SERIAL_LENGTH)
         {
             int nUsedLen = 0;
@@ -214,13 +214,13 @@ public:
         }
     }
 
-    static T* DecodeClass(const char* szBuf, unsigned long ulLen, unsigned int usKey)
+    static T* DecodeClass(const char* szBuf, unsigned int ulLen, unsigned int usKey)
     {
         T* pT = SerialClassManager<T>::GetClassInstance(usKey);
         //pT == NULL 表示类型未注册
         if (pT != NULL)
         {
-            unsigned long ulPackageLen = ulLen;
+            unsigned int ulPackageLen = ulLen;
             if (!(pT->Decode(const_cast<char*>(szBuf), ulPackageLen) && ulPackageLen == ulLen)) //解析数据不对
             {
                 delete pT;
@@ -230,7 +230,7 @@ public:
         return pT;
     }
 
-    static T* DecodeClass(const char* szBuf, unsigned long ulLen)
+    static T* DecodeClass(const char* szBuf, unsigned int ulLen)
     {
         int nUsed = ulLen;
         unsigned int usType = T::CheckData(szBuf, ulLen, nUsed);
@@ -245,11 +245,11 @@ public:
     }
 
     template<typename U>
-    static U* DecodeClassSpecial(const char* szBuf, unsigned long ulLen, unsigned long& ulUsedLen)
+    static U* DecodeClassSpecial(const char* szBuf, unsigned int ulLen, unsigned int& ulUsedLen)
     {
         U* pU = NULL;
         const char* pCurrent = szBuf;
-        unsigned long ulLeaveLen = ulLen;
+        unsigned int ulLeaveLen = ulLen;
         while (ulLeaveLen >= T::MIN_SERIAL_LENGTH)
         {
             int nUsedLen = 0;
@@ -258,7 +258,7 @@ public:
             if (usType == U::ClassKey)
             {
                 pU = new U;
-                unsigned long ulPackageLen = nUsedLen;
+                unsigned int ulPackageLen = nUsedLen;
                 if (!(pU->Decode(const_cast<char*>(pCurrent), ulPackageLen) && ulPackageLen == nUsedLen)) //解析数据不对
                 {
                     delete pU;
@@ -332,19 +332,19 @@ private:
     //       =0 表示数据头都不对
     //返回值<>NULL表示数据正确
     //       ulUsefulLen正确数据的长度
-    static T* Decode(const char* szBuf, unsigned long ulLen, unsigned long& ulUseLen)
+    static T* Decode(const char* szBuf, unsigned int ulLen, unsigned int& ulUseLen)
     {
         T* pT = NULL;
         int nUsedLen = 0;
         unsigned int usType = T::CheckData(szBuf, ulLen, nUsedLen);
         if (usType > 0)
         {
-            ulUseLen = (unsigned long)nUsedLen;
+            ulUseLen = (unsigned int)nUsedLen;
             pT = SerialClassManager<T>::GetClassInstance(usType);
             //pT == NULL 表示类型未注册
             if (pT != NULL)
             {
-                unsigned long ulPackageLen = ulUseLen;
+                unsigned int ulPackageLen = ulUseLen;
                 if (!(pT->Decode(const_cast<char*>(szBuf), ulPackageLen) && ulPackageLen == ulUseLen)) //解析数据不对
                 {
                     delete pT;

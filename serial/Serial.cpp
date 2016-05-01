@@ -2,7 +2,7 @@
 
 map<string, vector<char* (*)(Serial*, char*)> > Serial::zzz_mapSerialFunc;
 map<string, vector<char* (*)(Serial*, char*)> > Serial::zzz_mapUnserialFunc;
-map<string, vector<unsigned long (*)(Serial*)> > Serial::zzz_mapSizeFunc;
+map<string, vector<unsigned int (*)(Serial*)> > Serial::zzz_mapSizeFunc;
 
 #ifdef XML_ENCD_DECD
 map<string, vector<void (*)(Serial*, XMLWriter&)> > Serial::zzz_mapSerialXMLFunc;
@@ -58,8 +58,8 @@ unsigned int HTON(unsigned int VALUE)
 }
 
 struct ullST {
-	unsigned long val1;
-	unsigned long val2;	
+	unsigned int val1;
+	unsigned int val2;	
 };
 
 union ullUN {

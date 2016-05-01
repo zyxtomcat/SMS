@@ -91,7 +91,7 @@ unsigned long long NTOH(unsigned long long VALUE);
 { \
     return SerialItem<VarType, char>::Decode(((zzz__Serial__Class*)p)->VarName, pData);\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
     return SerialItem<VarType, char>::Size(((zzz__Serial__Class*)p)->VarName);\
 } \
@@ -111,7 +111,7 @@ unsigned long long NTOH(unsigned long long VALUE);
 { \
     if (DependExpr) return SerialItem<VarType, char>::Decode(((zzz__Serial__Class*)p)->##VarName, pData); else return pData;\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
     if (DependExpr) return SerialItem<VarType, char>::Size(((zzz__Serial__Class*)p)->##VarName); else return pData; \
 } \
@@ -131,7 +131,7 @@ unsigned long long NTOH(unsigned long long VALUE);
 { \
     return SerialItem<VarType, SizeType>::Decode(((zzz__Serial__Class*)p)->VarName, pData);\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
     return SerialItem<VarType, SizeType>::Size(((zzz__Serial__Class*)p)->VarName); \
 } \
@@ -151,7 +151,7 @@ unsigned long long NTOH(unsigned long long VALUE);
 { \
     if (DependExpr) return SerialItem<VarType, SizeType>::Decode(((zzz__Serial__Class*)p)->##VarName, pData);  else return pData; \
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
     if (DependExpr) return SerialItem<VarType, SizeType>::Size(((zzz__Serial__Class*)p)->##VarName);  else return pData; \
 } \
@@ -171,7 +171,7 @@ unsigned long long NTOH(unsigned long long VALUE);
 { \
     return SerialArray<VarType, VarLen>::Decode(((zzz__Serial__Class*)p)->VarName, pData);\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
     return SerialArray<VarType, VarLen>::Size(((zzz__Serial__Class*)p)->VarName); \
 } \
@@ -185,7 +185,7 @@ unsigned long long NTOH(unsigned long long VALUE);
 } \
     static char* zzz__Serial__##VarName(Serial* p, char* pData) \
 { \
-    for (unsigned long u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
+    for (unsigned int u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
     { \
         pData = SerialItem<VarType, SizeType>::Encode(((zzz__Serial__Class*)p)->##VarName[u32], pData); \
     } \
@@ -193,16 +193,16 @@ unsigned long long NTOH(unsigned long long VALUE);
 } \
     static char* zzz__Unserial__##VarName(Serial* p, char* pData) \
 { \
-    for (unsigned long u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
+    for (unsigned int u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
     { \
         pData = SerialItem<VarType, SizeType>::Decode(((zzz__Serial__Class*)p)->##VarName[u32], pData); \
     } \
     return pData;\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
-    unsigned long uSize = 0; \
-    for (unsigned long u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
+    unsigned int uSize = 0; \
+    for (unsigned int u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
     { \
         uSize += SerialItem<VarType, SizeType>::Size(((zzz__Serial__Class*)p)->##VarName[u32]); \
     } \
@@ -220,7 +220,7 @@ unsigned long long NTOH(unsigned long long VALUE);
 {\
     return zzz__Unserial(TYPE_NAME(zzz__Serial__Class), zzz__Serial__Parent__Class::DoUnserial(pData));\
 }\
-    virtual unsigned long DoSerialSize()\
+    virtual unsigned int DoSerialSize()\
 {\
     return zzz__Size(TYPE_NAME(zzz__Serial__Class)) + zzz__Serial__Parent__Class::DoSerialSize();\
 }\
@@ -298,7 +298,7 @@ void SaveXMLDocSample(const char* szDir)
 { \
     return SerialItem<VarType, char>::Decode(((zzz__Serial__Class*)p)->##VarName, pData);\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
     return SerialItem<VarType, char>::Size(((zzz__Serial__Class*)p)->##VarName);\
 } \
@@ -339,7 +339,7 @@ void SaveXMLDocSample(const char* szDir)
 { \
     return SerialItem<VarType, SizeType>::Decode(((zzz__Serial__Class*)p)->VarName, pData);\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
     return SerialItem<VarType, SizeType>::Size(((zzz__Serial__Class*)p)->VarName); \
 } \
@@ -380,7 +380,7 @@ void SaveXMLDocSample(const char* szDir)
 { \
     return SerialArray<VarType, VarLen>::Decode(((zzz__Serial__Class*)p)->VarName, pData);\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
     return SerialArray<VarType, VarLen>::Size(((zzz__Serial__Class*)p)->VarName); \
 } \
@@ -415,7 +415,7 @@ void SaveXMLDocSample(const char* szDir)
 } \
     static char* zzz__Serial__##VarName(Serial* p, char* pData) \
 { \
-    for (unsigned long u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
+    for (unsigned int u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
     { \
     pData = SerialItem<VarType, SizeType>::Encode(((zzz__Serial__Class*)p)->##VarName[u32], pData); \
     } \
@@ -423,16 +423,16 @@ void SaveXMLDocSample(const char* szDir)
 } \
     static char* zzz__Unserial__##VarName(Serial* p, char* pData) \
 { \
-    for (unsigned long u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
+    for (unsigned int u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
     { \
     pData = SerialItem<VarType, SizeType>::Decode(((zzz__Serial__Class*)p)->##VarName[u32], pData); \
     } \
     return pData;\
 } \
-    static unsigned long zzz__Size__##VarName(Serial* p) \
+    static unsigned int zzz__Size__##VarName(Serial* p) \
 { \
-    unsigned long uSize = 0; \
-    for (unsigned long u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
+    unsigned int uSize = 0; \
+    for (unsigned int u32 = 0; u32 < ((zzz__Serial__Class*)p)->VarLen; ++u32)  \
     { \
     uSize += SerialItem<VarType, SizeType>::Size(((zzz__Serial__Class*)p)->##VarName[u32]); \
     } \
@@ -470,7 +470,7 @@ void SaveXMLDocSample(const char* szDir)
 {\
     return zzz__Unserial(TYPE_NAME(zzz__Serial__Class), zzz__Serial__Parent__Class::DoUnserial(pData));\
 }\
-    virtual unsigned long DoSerialSize()\
+    virtual unsigned int DoSerialSize()\
 {\
     return zzz__Size(TYPE_NAME(zzz__Serial__Class)) + zzz__Serial__Parent__Class::DoSerialSize();\
 }\
@@ -568,7 +568,7 @@ class Serial
 public:
     static map<string, vector<char* (*)(Serial*, char*)> > zzz_mapSerialFunc;
     static map<string, vector<char* (*)(Serial*, char*)> > zzz_mapUnserialFunc;
-    static map<string, vector<unsigned long (*)(Serial*)> > zzz_mapSizeFunc;
+    static map<string, vector<unsigned int (*)(Serial*)> > zzz_mapSizeFunc;
 #ifdef XML_ENCD_DECD
     static map<string, vector<void (*)(Serial*, XMLWriter&)> > zzz_mapSerialXMLFunc;
     static map<string, vector<bool (*)(Serial*, XMLNodeInfo&)> > zzz_mapUnserialXMLFunc;
@@ -601,9 +601,9 @@ public:
     }
 
     template<typename T>
-    static void zzz__AddSizeFunc(unsigned long (*SizeFunc)(Serial*))
+    static void zzz__AddSizeFunc(unsigned int (*SizeFunc)(Serial*))
     {
-        map<string, vector<unsigned long (*)(Serial*)> >::iterator iter = zzz_mapSizeFunc.find(TYPE_NAME(T));
+        map<string, vector<unsigned int (*)(Serial*)> >::iterator iter = zzz_mapSizeFunc.find(TYPE_NAME(T));
         if (iter != zzz_mapSizeFunc.end())
         {
             iter->second.push_back(SizeFunc);
@@ -637,13 +637,13 @@ public:
         return pData;
     }
 
-    unsigned long zzz__Size(const char* szClassName)
+    unsigned int zzz__Size(const char* szClassName)
     {
-        unsigned long ulSize = 0;
-        map<string, vector<unsigned long (*)(Serial*)> >::iterator iter = Serial::zzz_mapSizeFunc.find(szClassName);
+        unsigned int ulSize = 0;
+        map<string, vector<unsigned int (*)(Serial*)> >::iterator iter = Serial::zzz_mapSizeFunc.find(szClassName);
         if (iter != Serial::zzz_mapSizeFunc.end())
         {
-            for (vector<unsigned long (*)(Serial*)>::iterator iterLoop = iter->second.begin(); iterLoop != iter->second.end(); ++iterLoop)
+            for (vector<unsigned int (*)(Serial*)>::iterator iterLoop = iter->second.begin(); iterLoop != iter->second.end(); ++iterLoop)
             {
                 ulSize += (*iterLoop)(this);
             }
@@ -691,12 +691,12 @@ public:
         return pData;
     }
 
-    virtual unsigned long DoSerialSize()
+    virtual unsigned int DoSerialSize()
     {
         return 0;
     }
 
-    virtual unsigned long DoAttachSerialSize()
+    virtual unsigned int DoAttachSerialSize()
     {
         return 0;
     }
@@ -837,7 +837,7 @@ public:
 #endif
 
     char* m_pHeader;
-    unsigned long m_ulSerialSize;
+    unsigned int m_ulSerialSize;
 public:
     Serial()
         :m_pBuf(NULL), m_ulBufLen(0)
@@ -879,7 +879,7 @@ public:
         return *this;
     }
 
-    bool Encode(char* pData, unsigned long& ulSize)
+    bool Encode(char* pData, unsigned int& ulSize)
     {
         assert(pData);
         m_ulSerialSize = GetSerialSize();
@@ -894,7 +894,7 @@ public:
                 pNewData = DoSerial(pNewData);
                 pNewData = DoAttachSerial(pNewData);
                 pNewData = AfterSerial(pNewData);
-                unsigned long ulNewSize = (unsigned long)(pNewData - m_pHeader);
+                unsigned int ulNewSize = (unsigned int)(pNewData - m_pHeader);
                 if (ulSize >= ulNewSize)
                 {
                     ulSize = ulNewSize;
@@ -916,7 +916,7 @@ public:
         }
     }
 
-    char* EncodeWithoutBuf(unsigned long& ulSize)
+    char* EncodeWithoutBuf(unsigned int& ulSize)
     {
         m_ulSerialSize = GetSerialSize();
         if (m_ulSerialSize > m_ulBufLen)
@@ -933,7 +933,7 @@ public:
             pNewData = DoSerial(pNewData);
             pNewData = DoAttachSerial(pNewData);
             pNewData = AfterSerial(pNewData);
-            ulSize = (unsigned long)(pNewData - m_pHeader);
+            ulSize = (unsigned int)(pNewData - m_pHeader);
             return m_pHeader;
         }
         catch (...)
@@ -942,7 +942,7 @@ public:
         }
     }
 
-    bool Decode(const char* pData, unsigned long& ulSize)
+    bool Decode(const char* pData, unsigned int& ulSize)
     {
         assert(pData);
         assert(ulSize > 0);
@@ -955,7 +955,7 @@ public:
             pNewData = DoUnserial(pNewData);
             pNewData = DoAttachUnserial(pNewData);
             pNewData = AfterUnserial(pNewData);
-            unsigned long ulNewSize = (unsigned long)(pNewData - m_pHeader);
+            unsigned int ulNewSize = (unsigned int)(pNewData - m_pHeader);
             return ulSize == ulNewSize;
         }
         catch (...)
@@ -966,11 +966,11 @@ public:
 
     bool Decode(const string& strData)
     {
-        unsigned long ulSize = strData.size();
+        unsigned int ulSize = strData.size();
         return Decode(strData.c_str(), ulSize);
     }
 
-    unsigned long GetSerialSize()
+    unsigned int GetSerialSize()
     {
         return DoSerialSize() + DoAttachSerialSize();
     }
@@ -1043,7 +1043,7 @@ public:
 
 private:
     char* m_pBuf;
-    unsigned long m_ulBufLen;
+    unsigned int m_ulBufLen;
 };
 
 template<typename T, typename SizeType, bool = IsBaseOf<Serial, T>::value>
@@ -1060,7 +1060,7 @@ public:
         return t.DoUnserial(pData);
     }
 
-    static unsigned long Size(Serial& t)
+    static unsigned int Size(Serial& t)
     {
         return t.DoSerialSize();
     }
@@ -1103,7 +1103,7 @@ public:
         return pData + sizeof(T);
     }
 
-    static unsigned long Size(const T& t)
+    static unsigned int Size(const T& t)
     {
         //(t);
         return sizeof(T);
@@ -1142,7 +1142,7 @@ public:
         return SerialItem<T, SizeType>::Decode(*t, pData);
     }
 
-    static unsigned long Size(T*& t)
+    static unsigned int Size(T*& t)
     {
         return SerialItem<T, SizeType>::Size(*t);
     }
@@ -1183,7 +1183,7 @@ public:
         return pData + sizeof(unsigned short);
     }
 
-    static unsigned long Size(const unsigned short& t)
+    static unsigned int Size(const unsigned short& t)
     {
         (t);
         return sizeof(unsigned short);
@@ -1208,41 +1208,41 @@ public:
 };
 
 template<typename SizeType>
-class SerialItem<unsigned long, SizeType, false>
+class SerialItem<unsigned int, SizeType, false>
 {
 public:
-    static char* Encode(const unsigned long& t, char* pData)
+    static char* Encode(const unsigned int& t, char* pData)
     {
-        *((unsigned long*)pData) = HTON(t);
-        return pData + sizeof(unsigned long);
+        *((unsigned int*)pData) = HTON(t);
+        return pData + sizeof(unsigned int);
     }
 
-    static char* Decode(unsigned long& t, char* pData)
+    static char* Decode(unsigned int& t, char* pData)
     {
-        t = NTOH(*((unsigned long*)pData));
-        return pData + sizeof(unsigned long);
+        t = NTOH(*((unsigned int*)pData));
+        return pData + sizeof(unsigned int);
     }
 
-    static unsigned long Size(const unsigned long& t)
+    static unsigned int Size(const unsigned int& t)
     {
         //(t);
-        return sizeof(unsigned long);
+        return sizeof(unsigned int);
     }
 
 #ifdef XML_ENCD_DECD
-    static void EncodeXML(unsigned long& t, XMLWriter& xmlWriter, const char* szNodeName)
+    static void EncodeXML(unsigned int& t, XMLWriter& xmlWriter, const char* szNodeName)
     {
         ToXML(t, xmlWriter, szNodeName);
     }
 
-    static void DecodeXML(unsigned long& t, XMLNodeInfo& nodeInfo)
+    static void DecodeXML(unsigned int& t, XMLNodeInfo& nodeInfo)
     {
         FromXML(t, nodeInfo);
     }
 
     static void MakeXMLDoc(XMLWriter& xmlWriter, const char* szNodeName, const char* szMemo)
     {
-        MakeItemXMLDoc<unsigned long>(xmlWriter, szNodeName, szMemo);
+        MakeItemXMLDoc<unsigned int>(xmlWriter, szNodeName, szMemo);
     }
 #endif
 };
@@ -1263,7 +1263,7 @@ public:
         return pData + sizeof(unsigned long long);
     }
 
-    static unsigned long Size(const unsigned long long& t)
+    static unsigned int Size(const unsigned long long& t)
     {
         //(t);
         return sizeof(unsigned long long);
@@ -1302,7 +1302,7 @@ public:
         return SerialItem<unsigned short, SizeType>::Decode(*t, pData);
     }
 
-    static unsigned long Size(unsigned short*& t)
+    static unsigned int Size(unsigned short*& t)
     {
         return SerialItem<unsigned short, SizeType>::Size(*t);
     }
@@ -1328,41 +1328,41 @@ public:
 };
 
 template<typename SizeType>
-class SerialItem<unsigned long*, SizeType, false>
+class SerialItem<unsigned int*, SizeType, false>
 {
 public:
-    static char* Encode(unsigned long*& t, char* pData)
+    static char* Encode(unsigned int*& t, char* pData)
     {
-        return SerialItem<unsigned long, SizeType>::Encode(*t, pData);
+        return SerialItem<unsigned int, SizeType>::Encode(*t, pData);
     }
 
-    static char* Decode(unsigned long*& t, char* pData)
+    static char* Decode(unsigned int*& t, char* pData)
     {
-        t = new unsigned long;
-        return SerialItem<unsigned long, SizeType>::Decode(*t, pData);
+        t = new unsigned int;
+        return SerialItem<unsigned int, SizeType>::Decode(*t, pData);
     }
 
-    static unsigned long Size(unsigned long*& t)
+    static unsigned int Size(unsigned int*& t)
     {
-        return SerialItem<unsigned long, SizeType>::Size(*t);
+        return SerialItem<unsigned int, SizeType>::Size(*t);
     }
 
 #ifdef XML_ENCD_DECD
-    static void EncodeXML(unsigned long* t, XMLWriter& xmlWriter, const char* szNodeName)
+    static void EncodeXML(unsigned int* t, XMLWriter& xmlWriter, const char* szNodeName)
     {
-        SerialItem<unsigned long, SizeType>::EncodeXML(*t, xmlWriter, szNodeName);
+        SerialItem<unsigned int, SizeType>::EncodeXML(*t, xmlWriter, szNodeName);
     }
 
-    static void DecodeXML(unsigned long*& t, XMLNodeInfo& nodeInfo)
+    static void DecodeXML(unsigned int*& t, XMLNodeInfo& nodeInfo)
     {
-        unsigned long* pt = new unsigned long;
-        SerialItem<unsigned long, SizeType>::DecodeXML(*pt, nodeInfo);
+        unsigned int* pt = new unsigned int;
+        SerialItem<unsigned int, SizeType>::DecodeXML(*pt, nodeInfo);
         *t = *pt;
     }
 
     static void MakeXMLDoc(XMLWriter& xmlWriter, const char* szNodeName, const char* szMemo)
     {
-        SerialItem<unsigned long, SizeType>::MakeXMLDoc(xmlWriter, szNodeName, szMemo);
+        SerialItem<unsigned int, SizeType>::MakeXMLDoc(xmlWriter, szNodeName, szMemo);
     }
 #endif
 };
@@ -1382,7 +1382,7 @@ public:
         return SerialItem<unsigned long long, SizeType>::Decode(*t, pData);
     }
 
-    static unsigned long Size(unsigned long long*& t)
+    static unsigned int Size(unsigned long long*& t)
     {
         return SerialItem<unsigned long long, SizeType>::Size(*t);
     }
@@ -1426,9 +1426,9 @@ public:
         return pData + usSize;
     }
 
-    static unsigned long Size(string& t)
+    static unsigned int Size(string& t)
     {
-        return (unsigned long )(t.size() + sizeof(SizeType));
+        return (unsigned int )(t.size() + sizeof(SizeType));
     }
 
 #ifdef XML_ENCD_DECD
@@ -1476,9 +1476,9 @@ public:
         return pData;
     }
 
-    static unsigned long Size(vector<T>& t)
+    static unsigned int Size(vector<T>& t)
     {
-        unsigned long ulSize = sizeof(SizeType);
+        unsigned int ulSize = sizeof(SizeType);
 		for (typename::vector<T>::size_type i = 0; i < t.size(); ++i)
         {
             ulSize += SerialItem<T, SizeType>::Size(t[i]);
@@ -1547,9 +1547,9 @@ public:
         return pData;
     }
 
-    static unsigned long Size(list<T>& t)
+    static unsigned int Size(list<T>& t)
     {
-        unsigned long ulSize = sizeof(SizeType);
+        unsigned int ulSize = sizeof(SizeType);
         for (typename list<T>::iterator iter = t.begin(); iter != t.end(); ++iter)
         {
             ulSize += SerialItem<T, SizeType>::Size(*iter);
@@ -1618,9 +1618,9 @@ public:
         return pData;
     }
 
-    static unsigned long Size(set<T>& t)
+    static unsigned int Size(set<T>& t)
     {
-        unsigned long ulSize = sizeof(SizeType);
+        unsigned int ulSize = sizeof(SizeType);
         for (typename set<T>::iterator iter = t.begin(); iter != t.end(); ++iter)
         {
             ulSize += SerialItem<T, SizeType>::Size(*iter);
@@ -1692,9 +1692,9 @@ public:
         return pData;
     }
 
-    static unsigned long Size(map<T, U>& t)
+    static unsigned int Size(map<T, U>& t)
     {
-        unsigned long ulSize = sizeof(SizeType);
+        unsigned int ulSize = sizeof(SizeType);
         for (typename map<T, U>::iterator iter = t.begin(); iter != t.end(); ++iter)
         {
             ulSize += SerialItem<T, SizeType>::Size(iter->first);
@@ -1782,9 +1782,9 @@ public:
         return pData;
     }
 
-    static unsigned long Size(T* t)
+    static unsigned int Size(T* t)
     {
-        unsigned long ulSize = 0;
+        unsigned int ulSize = 0;
         for (int ul = 0; ul < SIZE; ++ul)
         {
             ulSize += SerialItem<T, unsigned char>::Size(t[ul]);
@@ -1846,7 +1846,7 @@ public:
         return pData + SIZE;
     }
 
-    static unsigned long Size(char* t)
+    static unsigned int Size(char* t)
     {
         //(t);
         return SIZE;
@@ -1896,7 +1896,7 @@ public:
         {
             Serial::zzz_mapSerialFunc.insert(make_pair(TYPE_NAME(T), vector<char* (*)(Serial*, char*)>()));
             Serial::zzz_mapUnserialFunc.insert(make_pair(TYPE_NAME(T), vector<char* (*)(Serial*, char*)>()));
-            Serial::zzz_mapSizeFunc.insert(make_pair(TYPE_NAME(T), vector<unsigned long (*)(Serial*)>()));
+            Serial::zzz_mapSizeFunc.insert(make_pair(TYPE_NAME(T), vector<unsigned int (*)(Serial*)>()));
             ((T*)GET_HOST(GetHostClassFunc))->zzz__bInited = false;
         }
         else
@@ -1907,7 +1907,7 @@ public:
 };
 
 template<typename T, int (*GetHostClassFunc)(), char* (*SerialFunc)(Serial*, char*), 
-  char* (*UnserialFunc)(Serial*, char*), unsigned long (*SizeFunc)(Serial*)>
+  char* (*UnserialFunc)(Serial*, char*), unsigned int (*SizeFunc)(Serial*)>
 class SerialStud
 {
 public:
@@ -1934,7 +1934,7 @@ public:
         {
             Serial::zzz_mapSerialFunc.insert(make_pair(TYPE_NAME(T), vector<char* (*)(Serial*, char*)>()));
             Serial::zzz_mapUnserialFunc.insert(make_pair(TYPE_NAME(T), vector<char* (*)(Serial*, char*)>()));
-            Serial::zzz_mapSizeFunc.insert(make_pair(TYPE_NAME(T), vector<unsigned long (*)(Serial*)>()));
+            Serial::zzz_mapSizeFunc.insert(make_pair(TYPE_NAME(T), vector<unsigned int (*)(Serial*)>()));
             Serial::zzz_mapSerialXMLFunc.insert(make_pair(TYPE_NAME(T), vector<void (*)(Serial*, XMLWriter&)>()));
             Serial::zzz_mapUnserialXMLFunc.insert(make_pair(TYPE_NAME(T), vector<bool (*)(Serial*, XMLNodeInfo&)>()));
             Serial::zzz_mapMakeXMLDocFunc.insert(make_pair(TYPE_NAME(T), vector<void (*)(XMLWriter&)>()));
@@ -1948,7 +1948,7 @@ public:
 };
 
 template<typename T, int (*GetHostClassFunc)(), char* (*SerialFunc)(Serial*, char*), 
-char* (*UnserialFunc)(Serial*, char*), unsigned long (*SizeFunc)(Serial*), void (*SerialXMLFunc)(Serial*, XMLWriter&),
+char* (*UnserialFunc)(Serial*, char*), unsigned int (*SizeFunc)(Serial*), void (*SerialXMLFunc)(Serial*, XMLWriter&),
 bool (*UnserialXMLFunc)(Serial*, XMLNodeInfo&), void (*MakeXMLDocFunc)(XMLWriter&)>
 class SerialStud
 {

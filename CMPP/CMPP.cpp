@@ -31,7 +31,7 @@ CMPP& CMPP::operator=(const CMPP& src) {
 	return *this;
 }
 
-unsigned int CMPP::CheckData(const char* pData, unsigned long ulLen, int& nUsed) {
+unsigned int CMPP::CheckData(const char* pData, unsigned int ulLen, int& nUsed) {
 	const CMPPHeader *pHeader = (const CMPPHeader *)pData;
 	U32 u32Len = NTOH(pHeader->total_length);
 	U32 command_id = NTOH(pHeader->command_id);
@@ -82,7 +82,7 @@ char* CMPP::AfterUnserial(char* pData) {
 	return pData;
 }
 
-unsigned long CMPP::DoSerialSize() {
+unsigned int CMPP::DoSerialSize() {
 	return sizeof(CMPPHeader) + Serial::DoSerialSize();
 }
 

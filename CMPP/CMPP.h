@@ -73,8 +73,8 @@ public:
 	CMPP(const CMPP& src);
 	CMPP& operator=(const CMPP& src);
 
-	static unsigned int CheckData(const char* pData, unsigned long ulLen, int& nUsed);
-	static const unsigned long MIN_SERIAL_LENGTH = sizeof(CMPPHeader);
+	static unsigned int CheckData(const char* pData, unsigned int ulLen, int& nUsed);
+	static const unsigned int MIN_SERIAL_LENGTH = sizeof(CMPPHeader);
 
 	void setSeq(U32 seq);
 	U32 getSeq();
@@ -85,11 +85,11 @@ protected:
     virtual char* AfterSerial(char* pData);
     virtual char* BeforeUnserial(char* pData);
     virtual char* AfterUnserial(char* pData);
-    virtual unsigned long DoSerialSize();
+    virtual unsigned int DoSerialSize();
 
 private:
     char* m_pDecodeContent;
-    unsigned long m_ulDecodeSize;
+    unsigned int m_ulDecodeSize;
 };
 
 class CMPPConnect : public CMPP {
