@@ -71,7 +71,7 @@ char* CMPP::AfterSerial(char* pData) {
 }
 
 char* CMPP::BeforeUnserial(char* pData) {
-	CMPPHeader *pHeader = (CMPPHeader *)pHeader;
+	CMPPHeader *pHeader = (CMPPHeader *)pData;
 	seq = NTOH(pHeader->sequence_id);
 	m_pDecodeContent = pData + sizeof(CMPPHeader);
 	return m_pDecodeContent;
