@@ -23,7 +23,7 @@ CREATE TABLE `t_ISMG_Info` (
   `id` int(11) NOT NULL,
   `SP_Id` varchar(6) DEFAULT NULL,
   `server_host` varchar(24) DEFAULT NULL,
-  `server_port` smallint(6) DEFAULT NULL,
+  `server_port` smallint(6) unsigned DEFAULT NULL,
   `protocol` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

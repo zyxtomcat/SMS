@@ -52,6 +52,11 @@ ServiceI::start(const std::string& name, const CommunicatorPtr& communicator, co
 
 	DatabaseInfo dbInfo(db_host, db_port, db_user, db_passwd, db_name, db_charset);
 
+    if (false == SINGLETON(EventDriver)->init()) {
+        MYLOG_FATAL("Init EventDriver failed");
+        throw IceBox::FailureException(__FILE__, __LINE__, "Failed to init EventDriver");
+    }
+
     m_adapter = communicator->createObjectAdapter(name);
     IceUtil::Handle<SASSessionI> sasSessionIPtr = new SASSessionI;
     if (false == sasSessionIPtr->init(dbInfo, db_maxconcurrency)) {
