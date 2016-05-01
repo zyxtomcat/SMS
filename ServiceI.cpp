@@ -39,7 +39,7 @@ ServiceI::start(const std::string& name, const CommunicatorPtr& communicator, co
 	//int log_level = properties->getPropertyAsIntWithDefault()
     int db_maxconcurrency = properties->getPropertyAsIntWithDefault("db_maxconcurrency", 4);
 
-    int order_query_timer_interval = properties->getPropertyAsIntWithDefault("query_interval", 10);
+    //int order_query_timer_interval = properties->getPropertyAsIntWithDefault("query_interval", 10);
 
     std::string logpath = trim(properties->getPropertyWithDefault("logpath", "/var/log"));
     logpath += "/";

@@ -29,6 +29,8 @@ bool SASSessionI::init(DatabaseInfo &dbInfo, int db_maxconcurrency) {
 		
 		if (false == initAgent()) break;
 
+		MYLOG_INFO("Init SASSession success");
+
 		result = true;
 	} while(0);
 	
@@ -41,6 +43,8 @@ bool SASSessionI::init(DatabaseInfo &dbInfo, int db_maxconcurrency) {
 		if (NULL != m_dbService) {
 			delete m_dbService;
 		}
+
+		MYLOG_ERROR("Init SASSession failed");
 	}
 
 	return result;
@@ -59,6 +63,8 @@ bool SASSessionI::initAgent() {
 			EVENT_BIND(pAgent->OnSMSSubmitResp, this, SASSessionI::HandleSMSSubmitResp);
 			EVENT_BIND(pAgent->OnSMSStatusReport, this, SASSessionI::HandleSMSStatusReport);
 			EVENT_BIND(pAgent->OnSMSDeliver, this, SASSessionI::HandleSMSDeliver);
+		} else {
+			MYLOG_ERROR("Init ISMGAgent failed. Protocol:%s server_host:%s server_port:%d", pISMGInfo->Protocol.c_str(), pISMGInfo->server_host.c_str(), pISMGInfo->server_port);
 		}
 	}
 

@@ -40,8 +40,10 @@ bool ISMGManager::UpdateISMGInfo() {
 			}
 		}
 		
+		MYLOG_INFO("Update ISMGInfo success");
 		return true;
 	} else {
+		MYLOG_ERROR("Update ISMGParam failed");
 		return false;
 	}
 }
@@ -63,8 +65,10 @@ bool ISMGManager::UpdateISMGParam() {
 			}
 		}
 
+		MYLOG_INFO("Update ISMGParam success");
 		return true;
 	} else {
+		MYLOG_ERROR("Update ISMGParam failed");
 		return false;
 	}
 }

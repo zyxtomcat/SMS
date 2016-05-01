@@ -96,6 +96,7 @@ bool CMPPAgent::init() {
 
 	m_tcpClient.SetAddrPort(m_ISMGInfo.server_host.c_str(), m_ISMGInfo.server_port);
 	if (false == m_tcpClient.Open()) {
+		MYLOG_ERROR("Init CMPPAgent failed. server_port:%s server_port:%d, SP_Id:%s", m_ISMGInfo.server_host.c_str(), m_ISMGInfo.server_port, m_ISMGInfo.SP_Id.c_str());
 		return false;
 	}
 
@@ -141,12 +142,15 @@ void CMPPAgent::OnRecvData(TCPClient *pClient, const char *pBuffer, size_t size)
 void CMPPAgent::OnTCPConnect(TCPClient *pClient) {
 	if (pClient != &m_tcpClient) return;
 
+	MYLOG_INFO("CMPPAgent connect to server. server_host:%s, server_port:%d, SP_Id:%s", m_ISMGInfo.server_host.c_str(), m_ISMGInfo.server_port, m_ISMGInfo.SP_Id.c_str());
+
 	if (false == m_isLogin) Login();
 }
 
 void CMPPAgent::OnTCPDisConnect(TCPClient *pClient) {
 	if (pClient != &m_tcpClient) return;
 
+	MYLOG_INFO("CMPPAgent disconnect to server. server_host:%s, server_port:%d, SP_Id:%s", m_ISMGInfo.server_host.c_str(), m_ISMGInfo.server_port, m_ISMGInfo.SP_Id.c_str());
 	m_timerConnectActive.Stop();
 	m_isLogin = false;
 	m_tcpClient.Open();
