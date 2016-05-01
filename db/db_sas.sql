@@ -67,8 +67,10 @@ CREATE TABLE `t_sms_log` (
   `Src_Id` varchar(22) NOT NULL COMMENT '短信接入号',
   `Dst_Id` varchar(22) NOT NULL COMMENT '接收(下行)/发送(上行)号码(SIM卡号)',
   `sms_content` varchar(512) DEFAULT NULL COMMENT '短信内容',
+  `sms_content_hex` varchar(512) DEFAULT NULL COMMENT '短信内容16进制',
+  `pk_total` smallint unsigned DEFAULT NULL COMMENT '短信分包个数',
   `sms_fmt` tinyint DEFAULT 8 COMMENT '短信格式',
-  `sms_type` bit DEFAULT 0 COMMENT '0-下行， 1-上行'，
+  `sms_type` bit DEFAULT 0 COMMENT '0-下行， 1-上行',
   `report_state` varchar(8) DEFAULT NULL COMMENT '状态报告',
   `report_time` datetime DEFAULT NULL COMMENT '状态报告时间',
   `done_time` datetime DEFAULT NULL COMMENT '目标收到时间',

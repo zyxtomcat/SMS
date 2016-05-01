@@ -40,9 +40,11 @@ static void AssignSMSLog(QueryResult *pRes, SMSLog &entity) {
 	entity.Src_Id = pRes->getString("Src_Id");
 	entity.Dst_Id = pRes->getString("Dst_Id");
 	entity.sms_content = pRes->getString("sms_content");
+	entity.sms_content_hex = pRes->getString("sms_content_hex");
 	entity.sms_fmt = pRes->getInt("sms_fmt");
 	entity.sms_type = pRes->getBoolean("sms_type");
     entity.done_time = pRes->getString("done_time");
+    entity.report_time = pRes->getString("report_time");
 	entity.create_time = pRes->getString("create_time");
 	entity.update_time = pRes->getString("update_time");
 }
@@ -61,11 +63,15 @@ static void setSMSLogInsertParam(ParamSet &paramSet, void *param) {
 	paramSet.setString(3, smsLog->Src_Id);
 	paramSet.setString(4, smsLog->Dst_Id);
 	paramSet.setString(5, smsLog->sms_content);
-	paramSet.setInt(6, smsLog->sms_fmt);
-	paramSet.setBoolean(7, smsLog->sms_type);
-    paramSet.setString(8, smsLog->done_time.toString());
-	paramSet.setString(9, smsLog->create_time.toString());
-	paramSet.setString(10, smsLog->update_time.toString());
+	paramSet.setString(6, smsLog->sms_content_hex);
+	paramSet.setInt(7, smsLog->pk_total);
+	paramSet.setInt(8, smsLog->sms_fmt);
+	paramSet.setBoolean(9, smsLog->sms_type);
+	paramSet.setString(10, smsLog->report_state);
+    paramSet.setString(11, smsLog->done_time.toString());
+    paramSet.setString(12, smsLog->report_time.toString());
+	paramSet.setString(13, smsLog->create_time.toString());
+	paramSet.setString(14, smsLog->update_time.toString());
 }
 
 static void setUpdateSMSLogAfterSendParam(ParamSet &paramSet, void *param) {
@@ -146,8 +152,8 @@ bool DBService::getCustomerNumSeg(const std::string &num, CustomerNumSeg& seg) {
 U32 DBService::addSMSLog(const SMSLog & smsLog) {
 	DBAccess *dbAccess = getDBAccess();
     if (NULL == dbAccess) return 0;
-	std::string sql("INSERT INTO t_sms_log(Msg_Id,SP_Id,Src_Id,Dst_Id,sms_content,sms_fmt,sms_type,"
-		"comfirm_flag,done_time, comfirm_time,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+	std::string sql("INSERT INTO t_sms_log(Msg_Id,SP_Id,Src_Id,Dst_Id,sms_content,sms_content_hex,pk_total,sms_fmt,sms_type,"
+		"report_state,done_time,report_time,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	int id  = 0;
     std::list<U32 *> lst;
 	if (true == execute(sql, setSMSLogInsertParam, smsLog, dbAccess)) {

@@ -54,6 +54,7 @@ public:
 	std::string Src_Id;
 	std::string Dst_Id;
 	std::string sms_content;
+	std::string sms_content_hex;
 	U8 pk_total;
 	U8 sms_fmt;
 	bool sms_type;
