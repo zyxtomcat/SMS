@@ -5,6 +5,7 @@
 #include <functions.h>
 #include "Singleton.h"
 #include "DBAccess.h"
+#include "EventDriver.h>
 
 using namespace Ice;
 
