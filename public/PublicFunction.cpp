@@ -334,7 +334,8 @@ string MakeMD5(const string &src)
     MD5((const unsigned char *)src.c_str(), src.size(), md);
     string md5;
     md5.append((const char *)md, MD5_DIGEST_LENGTH);
-    return BinToHexString(md5, false);
+    //return BinToHexString(md5, false);
+    return md5;
 }
 
 string MakeSHA1(const string &src) {
