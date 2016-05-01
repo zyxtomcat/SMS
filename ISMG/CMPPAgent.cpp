@@ -337,7 +337,7 @@ void CMPPAgent::Handle(CMPPDeliver *pCMPP) {
 		smsLog.update_time = Now();
 	} else {
 		CMPPStatusReport statusReport;
-		unsigned long ulLen = pCMPP->msg_content.size();
+		unsigned int ulLen = pCMPP->msg_content.size();
 		if (true == statusReport.Decode(pCMPP->msg_content.c_str(), ulLen) 
 			&& ulLen < pCMPP->msg_content.size()) {
 			smsLog.Msg_Id= statusReport.msg_id;
