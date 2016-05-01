@@ -8,11 +8,11 @@
 
 typedef char S8;
 typedef short S16;
-typedef long S32;
+typedef int S32;
 typedef long long S64;
 typedef unsigned char U8;
 typedef unsigned short U16;
-typedef unsigned long U32;
+typedef unsigned int U32;
 typedef unsigned long long U64;
 typedef time_t TIME;
 typedef unsigned char BYTE;
