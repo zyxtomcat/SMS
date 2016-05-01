@@ -15,12 +15,12 @@ public:
 	virtual ~DBService();
 
 	bool getAllISMGInfo(std::list<ISMGInfo *>& lst);
-	bool getAllISMGParam(std::list<ISMGParam *> lst);
+	bool getAllISMGParam(std::list<ISMGParam *>& lst);
 	bool getCustomerNumSeg(const std::string &num, CustomerNumSeg& seg);
 	U32 addSMSLog(const SMSLog & smsLog);
 	bool updateSMSLog(const SMSLog &smsLog);
     bool updateSMSLogAfterSend(const SMSLog &smsLog);
-	bool getSMSLog(const std::string &num, const std::string &beginTime, const std::string &endTime, std::list<SMSLog *> lst);
+	bool getSMSLog(const std::string &num, const std::string &beginTime, const std::string &endTime, std::list<SMSLog *>& lst);
 
 protected:
 	DBAccess* getDBAccess();

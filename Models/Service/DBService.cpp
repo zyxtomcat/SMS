@@ -122,7 +122,7 @@ bool DBService::getAllISMGInfo(std::list<ISMGInfo *>& lst) {
 	return query(sql, NULL, NULL, AssignISMGInfo, lst);
 }
 
-bool DBService::getAllISMGParam(std::list<ISMGParam *> lst) {
+bool DBService::getAllISMGParam(std::list<ISMGParam *>& lst) {
 	std::string sql("SELECT * FROM t_ISMG_param");
 	return query(sql, NULL, NULL, AssignISMGParam, lst);
 }
@@ -179,7 +179,7 @@ bool DBService::updateSMSLogAfterSend(const SMSLog &smsLog) {
 	return execute(sql, setUpdateSMSLogAfterSendParam, smsLog);
 }
 
-bool DBService::getSMSLog(const std::string &num, const std::string &beginTime, const std::string &endTime, std::list<SMSLog *> lst) {
+bool DBService::getSMSLog(const std::string &num, const std::string &beginTime, const std::string &endTime, std::list<SMSLog *>& lst) {
 	std::string sql("SELECT * FROM t_sms_log WHERE Dst_Id=? AND sms_type=1 AND create_time between ? and ?");
 	SMSLogQueryParam param;
 	param.num = num;
