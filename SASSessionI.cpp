@@ -58,6 +58,7 @@ bool SASSessionI::initAgent() {
         ISMGInfo *pISMGInfo = *it;
 		ISMGAgent *pAgent = new CMPPAgent(*pISMGInfo);
 		if (true == pAgent->init()) {
+			MYLOG_INFO("init ISMGAgent success.Protocol:%s server_host:%s server_port:%d", pISMGInfo->protocol.c_str(), pISMGInfo->server_host.c_str(), pISMGInfo->server_port);
 			m_mapAgent.insert(std::make_pair(pISMGInfo->SP_Id, pAgent));
 
 			EVENT_BIND(pAgent->OnSMSSubmitResp, this, SASSessionI::HandleSMSSubmitResp);
