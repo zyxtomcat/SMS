@@ -6,7 +6,7 @@
 #include "ErrorCode.h"
 #include "SerialDecoder.h"
 
-static bool CMPPAgent::m_isCMPPRegistr = false;
+bool CMPPAgent::m_isCMPPRegistr = false;
 
 const U8 HEARTBEAT_ACTIVED_CHECK_INTERVAL = 3 * 60; 	//Heartbeat active check interval
 const U8 RESPONSE_TIMEOUT = 60;							//Response timeout
