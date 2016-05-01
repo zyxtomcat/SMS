@@ -38,10 +38,12 @@ bool SASSessionI::init(DatabaseInfo &dbInfo, int db_maxconcurrency) {
 		if (NULL != m_pIM) {
 			m_pIM->Clear();
 			delete m_pIM;
+			m_pIM = NULL;
 		}
 
 		if (NULL != m_dbService) {
 			delete m_dbService;
+			m_dbService = NULL;
 		}
 
 		MYLOG_ERROR("Init SASSession failed");
