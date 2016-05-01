@@ -19,7 +19,7 @@ public:
     TCPClient(const char* szAddr, unsigned short usPort);
     virtual ~TCPClient();
 
-    void Open();
+    bool Open();
     void Close();
     bool Actived() const;
     bool SendData(const char* buffer, size_t size);

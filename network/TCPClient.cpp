@@ -18,9 +18,9 @@ TCPClient::~TCPClient()
     Close();
 }
 
-void TCPClient::Open()
+bool TCPClient::Open()
 {
-    SINGLETON(EventDriver)->add(this);
+    return SINGLETON(EventDriver)->add(this);
 }
 
 void TCPClient::Close()

@@ -95,7 +95,9 @@ bool CMPPAgent::init() {
 	EVENT_BIND(m_tcpClient.OnTCPError, this, CMPPAgent::OnTCPError);
 
 	m_tcpClient.SetAddrPort(m_ISMGInfo.server_host.c_str(), m_ISMGInfo.server_port);
-	m_tcpClient.Open();
+	if (false == m_tcpClient.Open()) {
+		return false;
+	}
 
 	EVENT_BIND(m_timerConnectActive.OnTimer, this, CMPPAgent::OnConntionActice);
 
