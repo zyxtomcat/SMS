@@ -337,6 +337,15 @@ string MakeMD5(const string &src)
     return BinToHexString(md5);
 }
 
+string MakeMD516(const string &src)
+{
+    unsigned char md[MD5_DIGEST_LENGTH/2];
+    MD5((const unsigned char *)src.c_str(), src.size(), md);
+    string md5;
+    md5.append((const char *)md, MD5_DIGEST_LENGTH/2);
+    return BinToHexString(md5);
+}
+
 string MakeSHA1(const string &src) {
 
     unsigned char md[SHA_DIGEST_LENGTH];  
