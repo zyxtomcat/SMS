@@ -83,6 +83,9 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 		submit->vecDestTermianlId.push_back(dst_id);
 		submit->msg_content.assign(smslog.sms_content, i*max_msg_len, ((i == pk_total -1) ? (sms_content.size() - i*max_msg_len) : max_msg_len));
 
+		smsLog.vecSeq.push_back(submit->getSeq());
+		submit->setCtx((void*)&smsLog);
+
 		PostCMPPData(*submit);
 	}
 
@@ -273,6 +276,13 @@ void CMPPAgent::OnRespTimeout(RespTimeoutTimer *pTimer) {
 			if (pCMPP) {
 				if (it->second->u32RestransTimes >= MAX_RETRANS_TIMES -1 ) {
 					MYLOG_ERROR("CMPP: key=%d seq=%d package response timeout and restrans failed", pCMPP->GetKey(), pCMPP->getSeq());
+
+					void *pCtx = pCMPP->getCtx();
+					if (NULL != pCtx) {
+						SMSLog *pSMSLog = (SMSLog *)pCtx;
+						pSMSLog->check(u32Seq);
+						EventOnSMSSubmitResp.Execute(this, pSMSLog, SAS_SMS_RESPONSE_TIMEOUT);
+					}
 					m_mapCheckResp.erase(it);
 					delete pCMPP;
 					delete it->second;
@@ -347,7 +357,37 @@ void CMPPAgent::Handle(CMPPTerminateResp *pCMPP) {
 
 template<>
 void CMPPAgent::Handle(CMPPSubmitResp *pCMPP) {
+	U32 u32Seq = pCMPP->getSeq();
+	{
+		std::map<U32, RespCheckItem*>::iterator it;		
+		LockerGuard lockGuard(m_lockerCheckResp);
+		it = m_mapCheckResp.find(u32Seq);
+		if (it != m_mapCheckResp.end()) {
+			CMPP *pCMPPSend = it->second->pCMPP;
+			if (pCMPPSend) {
+				void* pCtx = pCMPPSend->getCtx();
+				if (NULL != pCtx) {
+					SMSLog *pSMSLog = (SMSLog *)pCtx;
+					pSMSLog->Msg_Id = pCMPP->msg_id;
+					if (pCMPP->result == 0 )) {
+						if (true == pSMSLog->check(u32Seq)) {
+							EventOnSMSSubmitResp.Execute(this, pSMSLog, SAS_SUCCESS);
+						}	
+					} else {
+						MYLOG_ERROR("Submit response result error. Result:%d, Dst_Id:%s sms_content:%s",
+						 pCMPP->result, pSMSLog->Dst_Id.c_str(), pSMSLog->sms_content.c_str());
 
+						pSMSLog->check(u32Seq);
+						EventOnSMSSubmitResp.Execute(this, pSMSLog, SAS_SMS_RESPONSE_ERROR);
+					}
+				}
+			}
+			
+			delete pCMPPSend;
+			delete it->second;
+			m_mapCheckResp.erase(it);
+		}
+	}
 }
 
 template<>
@@ -369,6 +409,8 @@ void CMPPAgent::Handle(CMPPDeliver *pCMPP) {
 		smsLog.sms_type = true;
 		smsLog.create_time = Now();
 		smsLog.update_time = Now();
+
+		EventOnSMSDeliver.Execute(this, smsLog);
 	} else {
 		CMPPStatusReport statusReport;
 		unsigned int ulLen = pCMPP->msg_content.size();
@@ -381,6 +423,8 @@ void CMPPAgent::Handle(CMPPDeliver *pCMPP) {
 			smsLog.Dst_Id = statusReport.dest_terminal_id;
 			smsLog.update_time = Now();
 			smsLog.sms_type = false;
+
+			EventOnSMSStatusReport.Execute(this, smsLog);
 		}	
 	}
 }

@@ -78,6 +78,9 @@ public:
 
 	void setSeq(U32 seq);
 	U32 getSeq();
+
+	void setCtx(void *ctx);
+	void* getCtx();
 private:
 	U32 seq;
 protected:
@@ -90,6 +93,7 @@ protected:
 private:
     char* m_pDecodeContent;
     unsigned int m_ulDecodeSize;
+    void * m_context;
 };
 
 class CMPPConnect : public CMPP {

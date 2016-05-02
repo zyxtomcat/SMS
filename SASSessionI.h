@@ -26,15 +26,20 @@ private:
 	bool initAgent();
 	ISMGAgent* getAgent(const std::string &SP_Id);
 
-	void HandleSMSSubmitResp(ISMGAgent* pAgent);
-	void HandleSMSStatusReport(ISMGAgent* pAgent);
-	void HandleSMSDeliver(ISMGAgent* pAgent);
+	void HandleSMSSubmitResp(ISMGAgent* pAgent, SMSLog *pSMSLog, int error_code);
+	void HandleSMSStatusReport(ISMGAgent* pAgent, SMSLog &smsLog);
+	void HandleSMSDeliver(ISMGAgent* pAgent, SMSLog &smsLog);
 	void HandleAgentReady(ISMGAgent* pAgent);
+
+	void AddSendSMSWaitQueue(SMSLog *pSMSLog);
 private:
 	DBService *m_dbService;
 	ISMGManager *m_pIM;
 
 	std::map<std::string, ISMGAgent *> m_mapAgent;
+
+	Locker m_lockerSMSWaitQueue;
+	std::map<U32, SMSLog*> m_mapSMSWaitQueue;
 };
 
 #endif

@@ -87,7 +87,7 @@ void SASSessionI::SendSMS( const ::std::string& request, ::std::string& response
 	
 	int error_code = SAS_SUCCESS;
 
-	SMSLog smsLog;
+	SMSLog *pSMSLog = new SMSLog;
 
 	Json::Value root; 
 	Json::Reader reader;
@@ -106,47 +106,55 @@ void SASSessionI::SendSMS( const ::std::string& request, ::std::string& response
 			break;
 		}
 
-		smsLog.Dst_Id = root["sim"].asCString();
-		smsLog.sms_content = root["content"].asCString();
-		smsLog.sms_content_hex = BinToHexString(smsLog.sms_content);
-		smsLog.sms_fmt = MSG_FMT_UCS2;
-		smsLog.sms_type = false;
+		pSMSLog->Dst_Id = root["sim"].asCString();
+		pSMSLog->sms_content = root["content"].asCString();
+		pSMSLog->sms_content_hex = BinToHexString(pSMSLog->sms_content);
+		pSMSLog->sms_fmt = MSG_FMT_UCS2;
+		pSMSLog->sms_type = false;
 
 		CustomerNumSeg seg;
-		if (false == m_dbService->getCustomerNumSeg(smsLog.Dst_Id, seg)) {
+		if (false == m_dbService->getCustomerNumSeg(pSMSLog->Dst_Id, seg)) {
 			error_code = SAS_SERVER_INTERNAL_ERROR;
 			MYLOG_ERROR("SASSessionI: SendSMS get num seg failed");
 			break;
 		}
 
-		smsLog.SP_Id = seg.SP_Id;
-		smsLog.Src_Id = seg.Src_id;
-		smsLog.service_id = seg.service_id;
-		smsLog.create_time = Now();
-		smsLog.update_time = Now();
+		pSMSLog->SP_Id = seg.SP_Id;
+		pSMSLog->Src_Id = seg.Src_id;
+		pSMSLog->service_id = seg.service_id;
+		pSMSLog->create_time = Now();
+		pSMSLog->update_time = Now();
 
-		U32 msg_id = m_dbService->addSMSLog(smsLog);
+		U32 msg_id = m_dbService->addSMSLog(*pSMSLog);
 		if (msg_id == 0) {
 			error_code = SAS_SERVER_INTERNAL_ERROR;
 			MYLOG_ERROR("SASSessionI: Add SMSLog to Database error.");
 			break;
 		}
 
-		smsLog.id = msg_id;	
+		pSMSLog->id = msg_id;	
 
-		ISMGAgent *pAgent = getAgent(smsLog.SP_Id);
+		ISMGAgent *pAgent = getAgent(pSMSLog->SP_Id);
 		if (NULL == pAgent) {
 			error_code = SAS_SERVER_INTERNAL_ERROR;
-			MYLOG_ERROR("SASSessionI: Not support sim:[%s]", smsLog.Dst_Id.c_str());
+			MYLOG_ERROR("SASSessionI: Not support sim:[%s]", pSMSLog->Dst_Id.c_str());
 			break;
 		}
 
-		error_code = pAgent->SendSMS(smsLog);
+		error_code = pAgent->SendSMS(*pSMSLog);
 		
-		if (error_code != SAS_SUCCESS) break;
+		if (error_code != SAS_SUCCESS) {
+			break;
+		} else {
+			AddSendSMSWaitQueue(pSMSLog);
+		}
 
 		//
 	} while(0);
+
+	if (SAS_SUCCESS != error_code) {
+		delete pSMSLog;
+	}
 
 	Json::Value respVal;
 	respVal["result"] = error_code;
@@ -218,18 +226,33 @@ void SASSessionI::QuerySMS(const ::std::string& request, ::std::string& response
 
 }
 
-void SASSessionI::HandleSMSSubmitResp(ISMGAgent* pAgent) {
+void SASSessionI::HandleSMSSubmitResp(ISMGAgent* pAgent, SMSLog *pSMSLog, int error_code) {
+	if (pSMSLog->check()) {
+		LockerGuard lockGuard(m_lockerSMSWaitQueue);
+		std::map<U32, SMSLog*>::iterator it = m_mapSMSWaitQueue.find(pSMSLog->id);
+		if (it != m_mapSMSWaitQueue.end()) {
+			delete pSMSLog;
+			m_mapSMSWaitQueue.erase(it);
+		}
+	} 
+}
+
+void SASSessionI::HandleSMSStatusReport(ISMGAgent* pAgent, SMSLog &smsLog) {
 
 }
 
-void SASSessionI::HandleSMSStatusReport(ISMGAgent* pAgent) {
-
-}
-
-void SASSessionI::HandleSMSDeliver(ISMGAgent* pAgent) {
-
+void SASSessionI::HandleSMSDeliver(ISMGAgent* pAgent, SMSLog &smsLog) {
+	U32 msg_id = m_dbService->addSMSLog(smsLog);
+	if (msg_id > 0) {
+		//push 
+	}
 }
 
 void SASSessionI::HandleAgentReady(ISMGAgent* pAgent) {
-	
+
+}
+
+void SASSessionI::AddSendSMSWaitQueue(SMSLog *pSMSLog) {
+	LockerGuard lockGuard(m_lockerSMSWaitQueue);
+	m_mapSMSWaitQueue.insert(std::make_pair(pSMSLog->id, pSMSLog));
 }

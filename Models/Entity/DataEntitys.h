@@ -65,6 +65,11 @@ public:
 	Datetime report_time;
 	Datetime create_time;
 	Datetime update_time;
+
+public:
+	bool check(U32 u32Seq = 0);
+
+	std::vector<U32> vecSeq;
 };
 
 #endif

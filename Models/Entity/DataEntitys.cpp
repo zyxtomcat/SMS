@@ -55,3 +55,18 @@ create_time(Now()),
 update_time(Now()) {
 
 }
+
+bool SMSLog::check(U32 u32Seq) {
+	if (u32Seq > 0) {
+		std::vector<U32>::iterator it = vecSeq.begin();
+		for (; it != vecSeq.end(); ++it) {
+			if (u32Seq == *it) {
+				break;
+			}
+		}
+
+		vecSeq.erase(it);
+	}
+
+	return vecSeq.size() == 0;
+}

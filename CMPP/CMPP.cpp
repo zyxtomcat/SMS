@@ -1,7 +1,7 @@
 #include "CMPP.h"
 
 CMPP::CMPP() 
-: seq(0), m_pDecodeContent(NULL), m_ulDecodeSize(0) {
+: seq(0), m_pDecodeContent(NULL), m_ulDecodeSize(0), m_context(NULL) {
 
 }
 
@@ -56,6 +56,14 @@ void CMPP::setSeq(U32 seq) {
 
 U32 CMPP::getSeq() {
 	return seq;
+}
+
+void CMPP::setCtx(void *ctx) {
+	m_context = ctx;
+}
+
+void* CMPP::getCtx() {
+	return m_context;
 }
 
 char* CMPP::BeforeSerial(char* pData) {
