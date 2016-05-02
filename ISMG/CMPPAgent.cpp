@@ -66,10 +66,10 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 
 	smslog.pk_total = pk_total;
 
-	CMPPSubmit *submit_arr = new CMPPSubmit[pk_total];
+	std::vector<CMPPSubmit *> vec;
 
 	for (U32 i = 0; i < pk_total; ++i) {	
-		CMPPSubmit *submit = submit_arr[i];
+		CMPPSubmit *submit = new CMPPSubmit;
 
 		submit->setSeq(GetSeq());
 		submit->pk_total = pk_total;
@@ -87,10 +87,14 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 
 		smslog.setSeq(submit->getSeq());
 		submit->setCtx((void*)&smslog);
+
+		vec.push_back(submit);
 	}
 
-	for (U32 i = 0; i < pk_total; ++i) {
-		submit = submit_arr[i];
+	for (std::vector<CMPPSubmit *>::iterator it = vec.begin();
+		it = vec.end(); 
+		++it) {
+		submit = *it;
 		PostCMPPData(*submit);
 	}
 
