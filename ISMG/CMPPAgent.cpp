@@ -201,7 +201,7 @@ void CMPPAgent::Login() {
 	m_authSource.assign(login->authenticatorSource, sizeof(login->authenticatorSource));
 
 	login->version.minVer = 0;
-	login->version.maxVer = 3;
+	login->version.maxVer = 1;
 
 	login->timestamp = atoi(timestamp.c_str());
 
