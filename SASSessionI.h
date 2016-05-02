@@ -20,7 +20,7 @@ public:
 	bool init(DatabaseInfo &dbInfo, int db_maxconcurrency);
 	void release();
 
-	virtual void SendSMS_async(const ::SAS::AMD_SASSession_SendSMSPtr&, const ::std::string&, const ::Ice::Current&);
+	virtual void SendSMS(const ::std::string&, ::std::string&, const ::Ice::Current&);
 	virtual void QuerySMS(const ::std::string&, ::std::string&, const ::Ice::Current&);
 private:
 	bool initAgent();

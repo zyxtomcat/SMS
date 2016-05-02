@@ -346,12 +346,12 @@ void CMPPAgent::Handle(CMPPTerminateResp *pCMPP) {
 
 template<>
 void CMPPAgent::Handle(CMPPSubmitResp *pCMPP) {
-
+	
 }
 
 template<>
 void CMPPAgent::Handle(CMPPQueryResp *pCMPP) {
-
+	
 }
 
 template<>
@@ -361,9 +361,11 @@ void CMPPAgent::Handle(CMPPDeliver *pCMPP) {
 	if (pCMPP->registered_delivery == 0) {
 		smsLog.Msg_Id = pCMPP->msg_id;
 		smsLog.Src_Id = pCMPP->dest_id;
+		smsLog.service_id = pCMPP->service_id;
 		smsLog.sms_fmt = pCMPP->msg_fmt;
 		smsLog.Dst_Id = pCMPP->src_terminal_id;
 		smsLog.sms_content = pCMPP->msg_content;
+		smsLog.sms_type = true;
 		smsLog.create_time = Now();
 		smsLog.update_time = Now();
 	} else {
@@ -371,14 +373,14 @@ void CMPPAgent::Handle(CMPPDeliver *pCMPP) {
 		unsigned int ulLen = pCMPP->msg_content.size();
 		if (true == statusReport.Decode(pCMPP->msg_content.c_str(), ulLen) 
 			&& ulLen < pCMPP->msg_content.size()) {
-			smsLog.Msg_Id= statusReport.msg_id;
+			smsLog.Msg_Id = statusReport.msg_id;
 			smsLog.report_state = statusReport.stat;
 			smsLog.report_time = Now();
 			smsLog.done_time.parse(statusReport.done_time);
 			smsLog.Dst_Id = statusReport.dest_terminal_id;
 			smsLog.update_time = Now();
-		}
-
+			smsLog.sms_type = false;
+		}	
 	}
 }
 

@@ -6,6 +6,7 @@
 #include <functions.h>
 #include <json/json.h>
 #include "CMPPAgent.h"
+#include "PublicFunction.h"
 
 SASSessionI::SASSessionI() : m_dbService(NULL), m_pIM(NULL) {
 
@@ -81,9 +82,7 @@ ISMGAgent* SASSessionI::getAgent(const std::string &SP_Id) {
 	}
 }
 
-void SASSessionI::SendSMS_async(const ::SAS::AMD_SASSession_SendSMSPtr& cb, 
-	const ::std::string& request, 
-	const ::Ice::Current& cur) {
+void SASSessionI::SendSMS( const ::std::string& request, ::std::string& response, const ::Ice::Current& cur) {
 	
 	int error_code = SAS_SUCCESS;
 
@@ -108,7 +107,9 @@ void SASSessionI::SendSMS_async(const ::SAS::AMD_SASSession_SendSMSPtr& cb,
 
 		smsLog.Dst_Id = root["sim"].asCString();
 		smsLog.sms_content = root["content"].asCString();
+		SMSLog.sms_content_hex = BinToHexString(smsLog.sms_content);
 		smsLog.sms_fmt = MSG_FMT_UCS2;
+		smsLog.sms_type = false;
 
 		CustomerNumSeg seg;
 		if (false == m_dbService->getCustomerNumSeg(smsLog.Dst_Id, seg)) {
@@ -120,6 +121,8 @@ void SASSessionI::SendSMS_async(const ::SAS::AMD_SASSession_SendSMSPtr& cb,
 		smsLog.SP_Id = seg.SP_Id;
 		smsLog.Src_Id = seg.Src_id;
 		smsLog.service_id = seg.service_id;
+		smsLog.create_time = Now();
+		smsLog.update_time = Now();
 
 		U32 msg_id = m_dbService->addSMSLog(smsLog);
 		if (msg_id == 0) {
@@ -128,9 +131,7 @@ void SASSessionI::SendSMS_async(const ::SAS::AMD_SASSession_SendSMSPtr& cb,
 			break;
 		}
 
-		smsLog.id = msg_id;
-		smsLog.create_time = Now();
-		smsLog.update_time = Now();
+		smsLog.id = msg_id;	
 
 		ISMGAgent *pAgent = getAgent(smsLog.SP_Id);
 		if (NULL == pAgent) {
@@ -146,16 +147,12 @@ void SASSessionI::SendSMS_async(const ::SAS::AMD_SASSession_SendSMSPtr& cb,
 		//
 	} while(0);
 
-	if (error_code != SAS_SUCCESS) {
-		Json::Value respVal;
-		respVal["result"] = error_code;
-		respVal["msg"] = getErrorDesc(error_code);
+	Json::Value respVal;
+	respVal["result"] = error_code;
+	respVal["msg"] = getErrorDesc(error_code);
 
-		Json::FastWriter writer;
-		std::string response = writer.write(respVal);
-
-		cb->ice_response(response);
-	}
+	Json::FastWriter writer;
+	std::string response = writer.write(respVal);
 }
 
 void SASSessionI::QuerySMS(const ::std::string& request, ::std::string& response, const ::Ice::Current& cur) {
