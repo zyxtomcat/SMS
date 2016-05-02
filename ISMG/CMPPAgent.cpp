@@ -66,8 +66,10 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 
 	smslog.pk_total = pk_total;
 
-	for (U32 i = 0; i < pk_total; ++i) {
-		CMPPSubmit *submit = new CMPPSubmit;
+	CMPPSubmit *submit_arr = new CMPPSubmit[pk_total];
+
+	for (U32 i = 0; i < pk_total; ++i) {	
+		CMPPSubmit *submit = submit_arr[i];
 
 		submit->setSeq(GetSeq());
 		submit->pk_total = pk_total;
@@ -83,9 +85,12 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 		submit->vecDestTermianlId.push_back(dst_id);
 		submit->msg_content.assign(smslog.sms_content, i*max_msg_len, ((i == pk_total -1) ? (sms_content.size() - i*max_msg_len) : max_msg_len));
 
-		smslog.vecSeq.push_back(submit->getSeq());
+		smslog.setSeq(submit->getSeq());
 		submit->setCtx((void*)&smslog);
+	}
 
+	for (U32 i = 0; i < pk_total; ++i) {
+		submit = submit_arr[i];
 		PostCMPPData(*submit);
 	}
 

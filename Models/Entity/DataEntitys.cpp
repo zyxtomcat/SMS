@@ -56,7 +56,12 @@ update_time(Now()) {
 
 }
 
+void SMSLog::setSeq(U32 u32Seq) {
+	vecSeq.push_back(u32Seq);
+}
+
 bool SMSLog::check(U32 u32Seq) {
+
 	if (u32Seq > 0) {
 		std::vector<U32>::iterator it = vecSeq.begin();
 		for (; it != vecSeq.end(); ++it) {

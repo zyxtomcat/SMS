@@ -68,6 +68,7 @@ public:
 
 public:
 	bool check(U32 u32Seq = 0);
+	void setSeq(U32 u32Seq);
 
 	std::vector<U32> vecSeq;
 };
