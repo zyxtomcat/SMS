@@ -33,7 +33,7 @@ template<typename TypeList>
 struct DeleteHandleCMPP {
 	static void Do(CMPPAgent *pAgent, U32 u32Key, CMPP *pCMPP) {
 		if (TypeList::Head::ClassKey == u32Key) {
-			pAgent->Handle<typename TypeList::Head>((typename TypeList::Head *)pCMPP);
+			pAgent->Handle<typename TypeList::Head>(dynamic_cast<typename TypeList::Head *>(pCMPP));
 		} else {
 			DeleteHandleCMPP<typename TypeList::Tail>::Do(pAgent, u32Key, pCMPP);
 		}
@@ -74,8 +74,9 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 		submit->pk_number = i + 1;
 		submit->registered_delivery = 1;
 		submit->msg_fmt = smslog.sms_fmt;
-		memcpy(submit->msg_src, smslog.SP_Id.c_str(), sizeof(submit->msg_src));
-		memcpy(submit->src_id, smslog.Src_Id.c_str(), sizeof(submit->src_id));
+		strncpy(submit->msg_src, smslog.SP_Id.c_str(), smslog.SP_Id.size());
+		strncpy(submit->src_id, smslog.Src_Id.c_str(), smslog.Src_Id.size());
+		strncpy(submit->service_id, smslog.service_id.c_str(), smslog.service_id.size());
 		TERMINAL_ID dst_id;
         memset(&dst_id, 0x00, sizeof(dst_id));
 		memcpy((void *)dst_id.id, smslog.Dst_Id.c_str(), sizeof(dst_id));
@@ -94,7 +95,6 @@ bool CMPPAgent::init() {
 		m_isCMPPRegistr = true;
 	}
 	
-
 	EVENT_BIND(m_tcpClient.OnTCPRecvData, this, CMPPAgent::OnRecvData);
 	EVENT_BIND(m_tcpClient.OnTCPConnect, this, CMPPAgent::OnTCPConnect);
 	EVENT_BIND(m_tcpClient.OnTCPDisconnect, this, CMPPAgent::OnTCPDisConnect);
@@ -204,8 +204,6 @@ void CMPPAgent::Login() {
 	login->version.maxVer = 3;
 
 	login->timestamp = atoi(timestamp.c_str());
-
-	//login->version = m_ISMGInfo.getISMGParamValue("Version");
 
 	PostCMPPData(*login);
 }
@@ -319,7 +317,7 @@ bool CMPPAgent::SendCMPPData(CMPP& sendCMPP) {
 
 template<typename T>
 void CMPPAgent::Handle(T *pCMPP) {
-	MYLOG_ERROR("CMPP Key=%d doesn't handle", pCMPP->GetKey());
+	MYLOG_ERROR("CMPP Key=0x%08x doesn't handle", pCMPP->GetKey());
 }
 
 

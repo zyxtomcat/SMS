@@ -42,7 +42,7 @@ module SAS {
 	
 	interface SASSession {
 		//Send downsteam SMS
-		["amd"] void SendSMS(string request, out string response);
+		void SendSMS(string request, out string response);
 
 		//Query upstream SMS
 		void QuerySMS(string request, out string response);

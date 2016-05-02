@@ -119,7 +119,7 @@ void SASSessionI::SendSMS_async(const ::SAS::AMD_SASSession_SendSMSPtr& cb,
 
 		smsLog.SP_Id = seg.SP_Id;
 		smsLog.Src_Id = seg.Src_id;
-
+		smsLog.service_id = seg.service_id;
 
 		U32 msg_id = m_dbService->addSMSLog(smsLog);
 		if (msg_id == 0) {

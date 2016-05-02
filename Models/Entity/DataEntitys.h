@@ -37,6 +37,7 @@ public:
 	U32 id;
 	std::string Src_id;
 	std::string SP_Id;
+	std::string service_id;
 	std::string begin_num;
 	std::string end_num;
 	U32 sum;
@@ -53,6 +54,7 @@ public:
 	std::string SP_Id;
 	std::string Src_Id;
 	std::string Dst_Id;
+	std::string service_id;
 	std::string sms_content;
 	std::string sms_content_hex;
 	U8 pk_total;
