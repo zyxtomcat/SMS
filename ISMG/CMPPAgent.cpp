@@ -281,7 +281,7 @@ void CMPPAgent::OnRespTimeout(RespTimeoutTimer *pTimer) {
 					if (NULL != pCtx) {
 						SMSLog *pSMSLog = (SMSLog *)pCtx;
 						pSMSLog->check(u32Seq);
-						EventOnSMSSubmitResp.Execute(this, pSMSLog, SAS_SMS_RESPONSE_TIMEOUT);
+						OnSMSSubmitResp.Execute(this, pSMSLog, SAS_SMS_RESPONSE_TIMEOUT);
 					}
 					m_mapCheckResp.erase(it);
 					delete pCMPP;
@@ -371,14 +371,14 @@ void CMPPAgent::Handle(CMPPSubmitResp *pCMPP) {
 					pSMSLog->Msg_Id = pCMPP->msg_id;
 					if (pCMPP->result == 0 )) {
 						if (true == pSMSLog->check(u32Seq)) {
-							EventOnSMSSubmitResp.Execute(this, pSMSLog, SAS_SUCCESS);
+							OnSMSSubmitResp.Execute(this, pSMSLog, SAS_SUCCESS);
 						}	
 					} else {
 						MYLOG_ERROR("Submit response result error. Result:%d, Dst_Id:%s sms_content:%s",
 						 pCMPP->result, pSMSLog->Dst_Id.c_str(), pSMSLog->sms_content.c_str());
 
 						pSMSLog->check(u32Seq);
-						EventOnSMSSubmitResp.Execute(this, pSMSLog, SAS_SMS_RESPONSE_ERROR);
+						OnSMSSubmitResp.Execute(this, pSMSLog, SAS_SMS_RESPONSE_ERROR);
 					}
 				}
 			}
