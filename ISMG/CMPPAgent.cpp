@@ -202,14 +202,16 @@ U32 CMPPAgent::GetSeq() {
 void CMPPAgent::Login() {
 	CMPPConnect *login = new CMPPConnect;
 
-	login->setSeq(GetSeq());
+	//login->setSeq(GetSeq());
+	login->setSeq(2);
 	std::string src_addr = m_ISMGInfo.getISMGParamValue("SP_Id");
 	strncpy(login->source_addr, src_addr.c_str(), sizeof(login->source_addr));
 
 	std::string authSource = src_addr;
 	authSource += "000000000";
 	authSource += m_ISMGInfo.getISMGParamValue("shared_secret");
-	std::string timestamp = GetTimestampNoYear();
+	//std::string timestamp = GetTimestampNoYear();
+	std::string timestamp = "0502175913";
 	authSource += timestamp;
 	std::string md5 = MakeMD5(authSource);
 	strncpy(login->authenticatorSource, md5.c_str(), sizeof(login->authenticatorSource));
