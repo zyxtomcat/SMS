@@ -30,8 +30,7 @@ unsigned short HTON(unsigned short VALUE)
 		return VALUE;
 	}
 	*/
-	//return htons(VALUE);
-	return VALUE;
+	return htons(VALUE);
 }
 
 template<>
@@ -61,8 +60,7 @@ unsigned int HTON(unsigned int VALUE)
 	{
 		return VALUE;
 	}*/
-	//return htonl(VALUE);
-	return VALUE;
+	return htonl(VALUE);
 }
 
 struct ullST {
@@ -113,8 +111,7 @@ unsigned short NTOH(unsigned short VALUE)
 	{
 		return VALUE;
 	}*/
-	//return ntohs(VALUE);
-	return VALUE;
+	return ntohs(VALUE);
 }
 
 template<>
@@ -143,8 +140,7 @@ unsigned int NTOH(unsigned int VALUE)
 		return VALUE;
 	}*/
 
-	//return ntohl(VALUE);
-	return VALUE;
+	return ntohl(VALUE);
 }
 
 template<>
