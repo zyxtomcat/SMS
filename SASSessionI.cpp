@@ -67,6 +67,7 @@ bool SASSessionI::initAgent() {
 			EVENT_BIND(pAgent->OnSMSSubmitResp, this, SASSessionI::HandleSMSSubmitResp);
 			EVENT_BIND(pAgent->OnSMSStatusReport, this, SASSessionI::HandleSMSStatusReport);
 			EVENT_BIND(pAgent->OnSMSDeliver, this, SASSessionI::HandleSMSDeliver);
+			EVENT_BIND(pAgent->OnAgentReady, this, SASSessionI::HandleAgentReady);
 		} else {
 			MYLOG_ERROR("Init ISMGAgent failed. Protocol:%s server_host:%s server_port:%d", pISMGInfo->protocol.c_str(), pISMGInfo->server_host.c_str(), pISMGInfo->server_port);
 		}

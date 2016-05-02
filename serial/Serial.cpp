@@ -1,4 +1,5 @@
 #include "Serial.h"
+#include <arpa/inet.h>
 
 map<string, vector<char* (*)(Serial*, char*)> > Serial::zzz_mapSerialFunc;
 map<string, vector<char* (*)(Serial*, char*)> > Serial::zzz_mapUnserialFunc;
@@ -19,6 +20,7 @@ T HTON(T VALUE)
 template<>
 unsigned short HTON(unsigned short VALUE)
 {
+	/*
 	if (is_littlendbian())
 	{
 		return ((VALUE & 0xFF00)>>8)&0x00FF | ((VALUE & 0x00FF)<<8)&0xFF00;
@@ -27,6 +29,8 @@ unsigned short HTON(unsigned short VALUE)
 	{
 		return VALUE;
 	}
+	*/
+	return htons(VALUE);
 }
 
 template<>
@@ -46,6 +50,7 @@ unsigned long HTON(unsigned long VALUE)
 template<>
 unsigned int HTON(unsigned int VALUE) 
 {
+	/*
 	if (is_littlendbian())
 	{
 		return ((VALUE & 0xFF000000)>>24)&0x000000FF  | ((VALUE & 0x00FF0000)>>8)&0x0000FF00 
@@ -54,7 +59,8 @@ unsigned int HTON(unsigned int VALUE)
 	else
 	{
 		return VALUE;
-	}
+	}*/
+	return htonl(VALUE);
 }
 
 struct ullST {
@@ -69,6 +75,7 @@ union ullUN {
 
 template<>
 unsigned long long HTON(unsigned long long VALUE) {
+	/*
 	if (is_littlendbian()) {
 		ullUN un, un1;
 		un.val = VALUE;
@@ -77,7 +84,13 @@ unsigned long long HTON(unsigned long long VALUE) {
 		return un1.val;
 	} else {
 		return VALUE;
-	}
+	}*/
+
+	ullUN un, un1;
+	un.val = VALUE;
+	un1.st.val2 = HTON(un.st.val1);
+	un1.st.val1 = HTON(un.st.val2);
+	return un1.val;
 }
 
 template<typename T>
@@ -89,6 +102,7 @@ T NTOH(T VALUE)
 template<>
 unsigned short NTOH(unsigned short VALUE)
 {
+	/*
 	if (is_littlendbian())
 	{
 		return HTON(VALUE);
@@ -96,7 +110,8 @@ unsigned short NTOH(unsigned short VALUE)
 	else
 	{
 		return VALUE;
-	}
+	}*/
+	return ntohs(VALUE);
 }
 
 template<>
@@ -115,6 +130,7 @@ unsigned long NTOH(unsigned long VALUE)
 template<>
 unsigned int NTOH(unsigned int VALUE)
 {
+	/*
 	if (is_littlendbian())
 	{
 		return HTON(VALUE);
@@ -122,11 +138,14 @@ unsigned int NTOH(unsigned int VALUE)
 	else
 	{
 		return VALUE;
-	}
+	}*/
+
+	return ntohl(VALUE);
 }
 
 template<>
 unsigned long long NTOH(unsigned long long VALUE) {
+	/*
 	if (is_littlendbian())
 	{
 		return HTON(VALUE);
@@ -135,4 +154,10 @@ unsigned long long NTOH(unsigned long long VALUE) {
 	{
 		return VALUE;
 	}
+	*/
+	ullUN un, un1;
+	un.val = VALUE;
+	un1.st.val2 = NTOH(un.st.val1);
+	un1.st.val1 = NTOH(un.st.val2);
+	return un1.val;
 }

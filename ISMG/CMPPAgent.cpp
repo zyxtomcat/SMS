@@ -329,6 +329,7 @@ void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 		if (strncmp(md5.c_str(), pCMPP->authISMG, 16) == 0) {
 			MYLOG_INFO("CMPP connect resp authISMG check success");
 			m_isLogin = true;
+			OnAgentReady.Execute(this);
 		} else {
 			MYLOG_ERROR("CMPP connect resp authISMG check failed");
 			m_tcpClient.Close();
@@ -346,12 +347,12 @@ void CMPPAgent::Handle(CMPPTerminateResp *pCMPP) {
 
 template<>
 void CMPPAgent::Handle(CMPPSubmitResp *pCMPP) {
-	
+
 }
 
 template<>
 void CMPPAgent::Handle(CMPPQueryResp *pCMPP) {
-	
+
 }
 
 template<>

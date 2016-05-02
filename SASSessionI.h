@@ -29,6 +29,7 @@ private:
 	void HandleSMSSubmitResp(ISMGAgent* pAgent);
 	void HandleSMSStatusReport(ISMGAgent* pAgent);
 	void HandleSMSDeliver(ISMGAgent* pAgent);
+	void HandleAgentReady(ISMGAgent* pAgent);
 private:
 	DBService *m_dbService;
 	ISMGManager *m_pIM;

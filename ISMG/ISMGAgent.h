@@ -9,6 +9,7 @@ class ISMGAgent;
 typedef EventDef<void(ISMGAgent* pAgent)> EventOnSMSSubmitResp;
 typedef EventDef<void(ISMGAgent* pAgent)> EventOnSMSStatusReport;
 typedef EventDef<void(ISMGAgent* pAgent)> EventOnSMSDeliver;
+typedef EventDef<void(ISMGAgent* pAgent)> EvnetOnAgentReady;
 
 class ISMGAgent : public Object {
 public:
@@ -21,6 +22,7 @@ public:
 	EventOnSMSSubmitResp OnSMSSubmitResp;
 	EventOnSMSStatusReport OnSMSStatusReport;
 	EventOnSMSDeliver OnSMSDeliver;
+	EvnetOnAgentReady OnAgentReady;
 protected:
 	ISMGInfo m_ISMGInfo;
 };
