@@ -253,7 +253,7 @@ void CMPPAgent::OnCheckNoSendQueue() {
 				CMPP* pCMPP = m_NotSendQueue.front();
 				m_NotSendQueue.pop_front();
 
-				PostCMPPData(pCMPP);
+				PostCMPPData(*pCMPP);
 			}
 		} else {
 			if (size == CMPP_SLIP_WINDOW_SIZE) {
@@ -294,7 +294,7 @@ void CMPPAgent::CheckResponse(CMPP *pCMPPResponse) {
 				CMPP* pCMPP = m_NotSendQueue.front();
 				m_NotSendQueue.pop_front();
 
-				PostCMPPData(pCMPP);
+				PostCMPPData(*pCMPP);
 			}
 		} else {
 			if (size == SAS_CMPP_CLIENT_DISCONNECT) {
@@ -387,7 +387,7 @@ void CMPPAgent::OnRespTimeout(RespTimeoutTimer *pTimer) {
 					CMPP* pCMPP = m_NotSendQueue.front();
 					m_NotSendQueue.pop_front();
 
-					PostCMPPData(pCMPP);
+					PostCMPPData(*pCMPP);
 				}
 			} else {
 				if (size == SAS_CMPP_CLIENT_DISCONNECT) {
