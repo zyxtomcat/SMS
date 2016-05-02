@@ -198,6 +198,7 @@ void CMPPAgent::Login() {
 	authSource += timestamp;
 	std::string md5 = MakeMD5(authSource);
 	strncpy(login->authenticatorSource, md5.c_str(), sizeof(login->authenticatorSource));
+	m_authSource.assign(login->authenticatorSource, sizeof(login->authenticatorSource));
 
 	login->version.minVer = 0;
 	login->version.maxVer = 3;
