@@ -94,7 +94,7 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 	for (std::vector<CMPPSubmit *>::iterator it = vec.begin();
 		it = vec.end(); 
 		++it) {
-		submit = *it;
+		CMPPSubmit *submit = *it;
 		PostCMPPData(*submit);
 	}
 
