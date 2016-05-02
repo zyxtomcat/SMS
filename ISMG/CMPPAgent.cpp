@@ -83,8 +83,8 @@ int CMPPAgent::SendSMS(SMSLog& smslog) {
 		submit->vecDestTermianlId.push_back(dst_id);
 		submit->msg_content.assign(smslog.sms_content, i*max_msg_len, ((i == pk_total -1) ? (sms_content.size() - i*max_msg_len) : max_msg_len));
 
-		smsLog.vecSeq.push_back(submit->getSeq());
-		submit->setCtx((void*)&smsLog);
+		smslog.vecSeq.push_back(submit->getSeq());
+		submit->setCtx((void*)&smslog);
 
 		PostCMPPData(*submit);
 	}
