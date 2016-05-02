@@ -72,6 +72,8 @@ private:
 
 	void OnConntionActice();
 
+	void OnCheckNoSendQueue();
+
 
 	void CheckResponse(CMPP *pCMPP);
 
@@ -84,6 +86,7 @@ private:
 	std::string m_strBuffer;
 
 	Timer m_timerConnectActive;
+	Timer m_timerCheckNoSendQueue;
 
 	bool m_isLogin;
 	std::string m_authSource;

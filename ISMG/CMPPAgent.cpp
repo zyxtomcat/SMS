@@ -9,6 +9,7 @@
 bool CMPPAgent::m_isCMPPRegistr = false;
 
 const U8 HEARTBEAT_ACTIVED_CHECK_INTERVAL = 3 * 60; 	//Heartbeat active check interval
+const U8 NO_SEND_QUEUE_CHECK_INTERVAL = 60;				//No send queue check interval
 const U8 RESPONSE_TIMEOUT = 60;							//Response timeout
 const U8 MAX_RETRANS_TIMES = 3;								//Retransmission times
 const U8 CMPP_SLIP_WINDOW_SIZE = 16;					//CMPP slip window size
@@ -119,6 +120,8 @@ bool CMPPAgent::init() {
 	}
 
 	EVENT_BIND(m_timerConnectActive.OnTimer, this, CMPPAgent::OnConntionActice);
+	EVENT_BIND(m_timerCheckNoSendQueue.OnTimer, this, CMPPAgent::OnCheckNoSendQueue);
+	m_timerCheckNoSendQueue.Start();
 
 	return true;
 }
@@ -228,8 +231,44 @@ void CMPPAgent::OnConntionActice() {
 	PostCMPPData(*aciveTest);
 }
 
+void CMPPAgent::OnCheckNoSendQueue() {
+
+	if (!m_isLogin) return;
+
+	size_t checkRespSize = 0;
+	size_t noSendQueueSize = 0;
+	size_t size = 0;
+	{
+		LockerGuard lockerGuard(m_lockerCheckResp);
+		checkRespSize = m_mapCheckResp.size();
+		size = CMPP_SLIP_WINDOW_SIZE - checkRespSize;
+	}
+
+	if (size > 0) {
+		LockerGuard lockerGuard(m_lockerNotSend);
+		noSendQueueSize = m_NotSendQueue.size();
+		if (noSendQueueSize > 0) {
+			size = size > noSendQueueSize ? noSendQueueSize : size;
+			for (size_t i = 0; i < size; ++i) {
+				CMPP* pCMPP = m_NotSendQueue.front();
+				m_NotSendQueue.pop_front();
+
+				PostCMPPData(pCMPP);
+			}
+		} else {
+			if (size == CMPP_SLIP_WINDOW_SIZE) {
+				m_timerConnectActive.Start();
+			}
+		}		
+	}	
+}
+
 void CMPPAgent::CheckResponse(CMPP *pCMPPResponse) {
 	U32 u32Seq = pCMPPResponse->getSeq();
+
+	size_t checkRespSize = 0;
+	size_t noSendQueueSize = 0;
+	size_t size = 0;
 	{
 		std::map<U32, RespCheckItem*>::iterator it;
 		LockerGuard lockGuard(m_lockerCheckResp);
@@ -237,11 +276,31 @@ void CMPPAgent::CheckResponse(CMPP *pCMPPResponse) {
 		if (it != m_mapCheckResp.end()) {
 			CMPP *pCMPP = it->second->pCMPP;
 			if (pCMPP) {
-				m_mapCheckResp.erase(it);
 				delete pCMPP;
 				delete it->second;
+				m_mapCheckResp.erase(it);
 			}
 		}
+		checkRespSize = m_mapCheckResp.size();
+		size = CMPP_SLIP_WINDOW_SIZE - checkRespSize;
+	}
+
+	if (size > 0) {
+		LockerGuard lockerGuard(m_lockerNotSend);
+		noSendQueueSize = m_NotSendQueue.size();
+		if (noSendQueueSize > 0) {
+			size = size > noSendQueueSize ? noSendQueueSize : size;
+			for (size_t i = 0; i < size; ++i) {
+				CMPP* pCMPP = m_NotSendQueue.front();
+				m_NotSendQueue.pop_front();
+
+				PostCMPPData(pCMPP);
+			}
+		} else {
+			if (size == SAS_CMPP_CLIENT_DISCONNECT) {
+				m_timerConnectActive.Start();
+			}
+		}		
 	}
 }
 
@@ -259,9 +318,10 @@ void CMPPAgent::ClearCheckAndSendBuffer() {
 					pSMSLog->check(pCMPP->getSeq());
 					OnSMSSubmitResp.Execute(this, pSMSLog, SAS_CMPP_CLIENT_DISCONNECT);
 				}
-				m_mapCheckResp.erase(it);
+
 				delete pCMPP;
 				delete it->second;
+				m_mapCheckResp.erase(it);
 			}
 		}
 		m_mapCheckResp.clear();
@@ -282,6 +342,9 @@ void CMPPAgent::ClearCheckAndSendBuffer() {
 
 void CMPPAgent::OnRespTimeout(RespTimeoutTimer *pTimer) {
 	U32 u32Seq = pTimer->getSeq();
+	size_t checkRespSize = 0;
+	size_t noSendQueueSize = 0;
+	size_t size = 0;
 	{
 		std::map<U32, RespCheckItem*>::iterator it;
 		LockerGuard lockGuard(m_lockerCheckResp);
@@ -298,16 +361,39 @@ void CMPPAgent::OnRespTimeout(RespTimeoutTimer *pTimer) {
 						pSMSLog->check(u32Seq);
 						OnSMSSubmitResp.Execute(this, pSMSLog, SAS_SMS_RESPONSE_TIMEOUT);
 					}
-					m_mapCheckResp.erase(it);
+					
 					delete pCMPP;
 					delete it->second;
+					m_mapCheckResp.erase(it);
 				} else {
 					SendCMPPData(*pCMPP);
-					++it->second->u32RestransTimes;
-					MYLOG_INFO("CMPP: key=%d seq=%d package restrans in %d times", pCMPP->GetKey(), pCMPP->getSeq(), it->second->u32RestransTimes);
+					++(it->second->u32RestransTimes);
+					MYLOG_INFO("CMPP: key=0x08x seq=%d package restrans in %d times", pCMPP->GetKey(), pCMPP->getSeq(), it->second->u32RestransTimes);
 				}
 			}
 			
+		}
+		checkRespSize = m_mapCheckResp.size();
+		size = CMPP_SLIP_WINDOW_SIZE - checkRespSize;
+	}
+
+	{
+		if (size > 0) {
+			LockerGuard lockerGuard(m_lockerNotSend);
+			noSendQueueSize = m_NotSendQueue.size();
+			if (noSendQueueSize > 0) {
+				size = size > noSendQueueSize ? noSendQueueSize : size;
+				for (size_t i = 0; i < size; ++i) {
+					CMPP* pCMPP = m_NotSendQueue.front();
+					m_NotSendQueue.pop_front();
+
+					PostCMPPData(pCMPP);
+				}
+			} else {
+				if (size == SAS_CMPP_CLIENT_DISCONNECT) {
+					m_timerConnectActive.Start();
+				}
+			}		
 		}
 	}
 }
@@ -315,7 +401,8 @@ void CMPPAgent::OnRespTimeout(RespTimeoutTimer *pTimer) {
 void CMPPAgent::PostCMPPData(CMPP& sendCMPP) {
 	{
 		LockerGuard lockGuard(m_lockerCheckResp);
-		if (m_mapCheckResp.size() < CMPP_SLIP_WINDOW_SIZE) {
+		if ((m_isLogin || (!m_isLogin && sendCMPP.GetKey() == CMPP_CONNECT)) 
+			&& m_mapCheckResp.size() < CMPP_SLIP_WINDOW_SIZE) {
 			if (true == SendCMPPData(sendCMPP)) {
 				RespCheckItem *pItem = new RespCheckItem(this, &sendCMPP, sendCMPP.getSeq());
 				m_mapCheckResp.insert(std::make_pair(sendCMPP.getSeq(), pItem));

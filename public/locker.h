@@ -2,8 +2,8 @@
 #define _LOCKER_H
 #include <IceUtil/Mutex.h>
 
-typedef IceUtil::Mutex Locker;
-typedef IceUtil::Mutex::Lock LockerGuard;
+typedef IceUtil::RecMutex Locker;
+typedef IceUtil::RecMutex::Lock LockerGuard;
 
 
 #endif
