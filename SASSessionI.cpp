@@ -230,3 +230,6 @@ void SASSessionI::HandleSMSDeliver(ISMGAgent* pAgent) {
 
 }
 
+void SASSessionI::HandleAgentReady(ISMGAgent* pAgent) {
+	
+}
