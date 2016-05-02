@@ -107,7 +107,7 @@ void SASSessionI::SendSMS( const ::std::string& request, ::std::string& response
 
 		smsLog.Dst_Id = root["sim"].asCString();
 		smsLog.sms_content = root["content"].asCString();
-		SMSLog.sms_content_hex = BinToHexString(smsLog.sms_content);
+		smsLog.sms_content_hex = BinToHexString(smsLog.sms_content);
 		smsLog.sms_fmt = MSG_FMT_UCS2;
 		smsLog.sms_type = false;
 
@@ -152,7 +152,7 @@ void SASSessionI::SendSMS( const ::std::string& request, ::std::string& response
 	respVal["msg"] = getErrorDesc(error_code);
 
 	Json::FastWriter writer;
-	std::string response = writer.write(respVal);
+	response = writer.write(respVal);
 }
 
 void SASSessionI::QuerySMS(const ::std::string& request, ::std::string& response, const ::Ice::Current& cur) {
