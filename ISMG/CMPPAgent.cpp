@@ -334,6 +334,9 @@ void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 			MYLOG_ERROR("CMPP connect resp authISMG check failed");
 			m_tcpClient.Close();
 		}
+	} else {
+		MYLOG_ERROR("CMPPConnectResp status error.Status=%d", pCMPP->status);
+		m_tcpClient.Close();
 	}
 }
 
