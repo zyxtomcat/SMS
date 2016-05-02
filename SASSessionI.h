@@ -7,6 +7,7 @@
 #include <map>
 #include "Object.h"
 #include "locker.h"
+#include "DataTypeDef.h"
 
 class DatabaseInfo;
 class DBService;
