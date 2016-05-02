@@ -369,7 +369,7 @@ void CMPPAgent::Handle(CMPPSubmitResp *pCMPP) {
 				if (NULL != pCtx) {
 					SMSLog *pSMSLog = (SMSLog *)pCtx;
 					pSMSLog->Msg_Id = pCMPP->msg_id;
-					if (pCMPP->result == 0 )) {
+					if (pCMPP->result == 0 ) {
 						if (true == pSMSLog->check(u32Seq)) {
 							OnSMSSubmitResp.Execute(this, pSMSLog, SAS_SUCCESS);
 						}	
@@ -381,11 +381,11 @@ void CMPPAgent::Handle(CMPPSubmitResp *pCMPP) {
 						OnSMSSubmitResp.Execute(this, pSMSLog, SAS_SMS_RESPONSE_ERROR);
 					}
 				}
-			}
-			
-			delete pCMPPSend;
-			delete it->second;
-			m_mapCheckResp.erase(it);
+
+				delete pCMPPSend;
+				delete it->second;
+				m_mapCheckResp.erase(it);
+			}	
 		}
 	}
 }
