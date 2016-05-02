@@ -410,7 +410,7 @@ void CMPPAgent::Handle(CMPPDeliver *pCMPP) {
 		smsLog.create_time = Now();
 		smsLog.update_time = Now();
 
-		EventOnSMSDeliver.Execute(this, smsLog);
+		OnSMSDeliver.Execute(this, smsLog);
 	} else {
 		CMPPStatusReport statusReport;
 		unsigned int ulLen = pCMPP->msg_content.size();
@@ -424,7 +424,7 @@ void CMPPAgent::Handle(CMPPDeliver *pCMPP) {
 			smsLog.update_time = Now();
 			smsLog.sms_type = false;
 
-			EventOnSMSStatusReport.Execute(this, smsLog);
+			OnSMSStatusReport.Execute(this, smsLog);
 		}	
 	}
 }
