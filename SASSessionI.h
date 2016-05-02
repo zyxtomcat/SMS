@@ -11,6 +11,7 @@ class DatabaseInfo;
 class DBService;
 class ISMGManager;
 class ISMGAgent;
+class SMSLog;
 
 class SASSessionI : public SAS::SASSession, public Object {
 public:
