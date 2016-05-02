@@ -244,6 +244,12 @@ void CMPPAgent::ClearCheckAndSendBuffer() {
 		for (; it != m_mapCheckResp.end(); ++it) {
 			CMPP *pCMPP = it->second->pCMPP;
 			if (pCMPP) {
+				void *pCtx = pCMPP->getCtx();
+				if (NULL != pCtx) {
+					SMSLog *pSMSLog = (SMSLog *)pCtx;
+					pSMSLog->check(pCMPP->getSeq());
+					OnSMSSubmitResp.Execute(this, pSMSLog, SAS_CMPP_CLIENT_DISCONNECT);
+				}
 				m_mapCheckResp.erase(it);
 				delete pCMPP;
 				delete it->second;

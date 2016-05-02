@@ -11,7 +11,8 @@ static const std::string error_desc[] = {
 	"",
 	"",
 	"",
-	"CMPP not login"
+	"CMPP not login",
+	"CMPP disconnect"
 };
 
 
