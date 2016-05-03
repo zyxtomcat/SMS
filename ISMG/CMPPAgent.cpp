@@ -121,7 +121,7 @@ bool CMPPAgent::init() {
 
 	EVENT_BIND(m_timerConnectActive.OnTimer, this, CMPPAgent::OnConntionActice);
 	EVENT_BIND(m_timerCheckNoSendQueue.OnTimer, this, CMPPAgent::OnCheckNoSendQueue);
-	m_timerCheckNoSendQueue.Start();
+	
 
 	return true;
 }
@@ -476,6 +476,8 @@ void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 		MYLOG_INFO("CMPP connect resp authISMG check success");
 		m_isLogin = true;
 		OnAgentReady.Execute(this);
+
+		m_timerCheckNoSendQueue.Start();
 	} else {
 		MYLOG_ERROR("CMPPConnectResp status error.Status=%d", pCMPP->status);
 		m_tcpClient.Close();
