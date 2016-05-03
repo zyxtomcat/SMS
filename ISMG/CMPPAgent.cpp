@@ -457,7 +457,7 @@ void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 		p += sizeof(pCMPP->status);
 		memcpy(p, m_authSource.c_str(), m_authSource.size());
 		p += m_authSource.size();
-		memcpy(p, shared_secret.c_str(), shared_secret.c_str());
+		memcpy(p, shared_secret.c_str(), shared_secret.size());
 		std::string md5 = MakeMD5(authISMG, len);
 		if (strncmp(md5.c_str(), pCMPP->authISMG, 16) == 0) {
 			MYLOG_INFO("CMPP connect resp authISMG check success");
