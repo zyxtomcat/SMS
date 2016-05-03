@@ -174,7 +174,9 @@ void CMPPAgent::OnTCPDisConnect(TCPClient *pClient) {
 	MYLOG_INFO("CMPPAgent disconnect to server. server_host:%s, server_port:%d, SP_Id:%s", m_ISMGInfo.server_host.c_str(), m_ISMGInfo.server_port, m_ISMGInfo.SP_Id.c_str());
 	ClearCheckAndSendBuffer();
 	m_timerConnectActive.Stop();
+	m_timerCheckNoSendQueue.Stop();
 	m_isLogin = false;
+	m_strBuffer.clear();
 	m_tcpClient.Open();
 }
 
@@ -566,6 +568,6 @@ void CMPPAgent::Handle(CMPPCancelResp *pCMPP) {
 
 template<>
 void CMPPAgent::Handle(CMPPActiveTestResp *pCMPP) {
-
+	MYLOG_INFO("CMPPActiveTestResp");
 }
 
