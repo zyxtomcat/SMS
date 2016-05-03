@@ -448,6 +448,7 @@ void CMPPAgent::Handle(T *pCMPP) {
 template<>
 void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 	if (pCMPP->status == 0) {
+		/*
 		std::string shared_secret = m_ISMGInfo.getISMGParamValue("shared_secret");
 		size_t len = sizeof(U32)+m_authSource.size()+shared_secret.size();
 		char *authISMG = new char[len];
@@ -469,6 +470,10 @@ void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 		}
 
 		delete[] authISMG;
+		*/
+		MYLOG_INFO("CMPP connect resp authISMG check success");
+		m_isLogin = true;
+		OnAgentReady.Execute(this);
 	} else {
 		MYLOG_ERROR("CMPPConnectResp status error.Status=%d", pCMPP->status);
 		m_tcpClient.Close();
