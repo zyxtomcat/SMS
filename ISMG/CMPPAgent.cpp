@@ -210,11 +210,12 @@ void CMPPAgent::Login() {
 	std::string authSource = src_addr;
 	authSource += "000000000";
 	authSource += m_ISMGInfo.getISMGParamValue("shared_secret");
-	//std::string timestamp = GetTimestampNoYear();
-	std::string timestamp = "0502175913";
+	std::string timestamp = GetTimestampNoYear();
+	//std::string timestamp = "0502175913";
 	authSource += timestamp;
 	std::string md5 = MakeMD5(authSource);
-	//strncpy(login->authenticatorSource, md5.c_str(), sizeof(login->authenticatorSource));
+	strncpy(login->authenticatorSource, md5.c_str(), sizeof(login->authenticatorSource));
+	/*
 	login->authenticatorSource[0] = 83;
 	login->authenticatorSource[1] = 106;
 	login->authenticatorSource[2] = 8;
@@ -231,10 +232,11 @@ void CMPPAgent::Login() {
 	login->authenticatorSource[13] =8;
 	login->authenticatorSource[14] = 26;
 	login->authenticatorSource[15] =  221;
+	*/
 	m_authSource.assign(login->authenticatorSource, sizeof(login->authenticatorSource));
 
 	login->version.minVer = 0;
-	login->version.maxVer = 1;
+	login->version.maxVer = 3;
 
 	login->timestamp = atoi(timestamp.c_str());
 
