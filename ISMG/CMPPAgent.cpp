@@ -208,7 +208,8 @@ void CMPPAgent::Login() {
 	strncpy(login->source_addr, src_addr.c_str(), sizeof(login->source_addr));
 
 	std::string authSource = src_addr;
-	authSource += "000000000";
+	//authSource += "000000000";
+	authSource.append("\0\0\0\0\0\0\0\0\0");
 	authSource += m_ISMGInfo.getISMGParamValue("shared_secret");
 	std::string timestamp = GetTimestampNoYear();
 	//std::string timestamp = "0502175913";
