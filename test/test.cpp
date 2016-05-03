@@ -2,6 +2,7 @@
 #include "SAS.h"
 #include <json/json.h>
 #include <functions.h>
+#include <iostream>
 
 using namespace SAS;
 
@@ -34,16 +35,16 @@ int main(int argc, char **argv) {
 
        session->SendSMS(request, response);
 
-       cout<<"orderRequest = "<<request<<endl;
-       cout<<"orderResponse = "<<response<<endl;
+       std::cout<<"orderRequest = "<<request<<std::endl;
+       std::cout<<"orderResponse = "<<response<<std::endl;
 
        status = 0;
 
     } catch (const Ice::Exception &e) {
-        cerr<<e<<endl;
+        std::cerr<<e<<std::endl;
         status = 1;
     } catch (const char *msg) {
-        cerr<<msg<<endl;
+        std::cerr<<msg<<std::endl;
         status = 1;
     }
 
