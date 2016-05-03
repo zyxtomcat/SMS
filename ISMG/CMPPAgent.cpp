@@ -230,6 +230,8 @@ void CMPPAgent::Login() {
 
 	login->timestamp = atoi(timestamp.c_str());
 
+	delete[] authSource;
+
 	PostCMPPData(*login);
 }
 
@@ -446,8 +448,17 @@ void CMPPAgent::Handle(T *pCMPP) {
 template<>
 void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 	if (pCMPP->status == 0) {
-		std::string authISMG = format("%d%s%s", pCMPP->status, m_authSource.c_str(), m_ISMGInfo.getISMGParamValue("shared_secret").c_str());
-		std::string md5 = MakeMD5(authISMG);
+		std::string shared_secret = m_ISMGInfo.getISMGParamValue("shared_secret");
+		size_t len = sizeof(U32)+m_authSource.size()+shared_secret.size();
+		char *authISMG = new char[len];
+		memset(authISMG, 0x00, sizeof(char)*len);
+		char *p = authISMG;
+		memcpy(p, pCMPP->status, sizeof(pCMPP->status));
+		p += sizeof(pCMPP->status);
+		memcpy(p, m_authSource.c_str(), m_authSource.size());
+		p += m_authSource.size();
+		memcpy(p, shared_secret.c_str(), shared_secret.c_str());
+		std::string md5 = MakeMD5(authISMG, len);
 		if (strncmp(md5.c_str(), pCMPP->authISMG, 16) == 0) {
 			MYLOG_INFO("CMPP connect resp authISMG check success");
 			m_isLogin = true;
@@ -456,6 +467,8 @@ void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 			MYLOG_ERROR("CMPP connect resp authISMG check failed");
 			m_tcpClient.Close();
 		}
+
+		delete[] authISMG;
 	} else {
 		MYLOG_ERROR("CMPPConnectResp status error.Status=%d", pCMPP->status);
 		m_tcpClient.Close();
