@@ -327,15 +327,17 @@ string HexStringToBin(const string& str)
     return strResult;
 }
 
+string MakeMD5(const char* pData, size_t size) {
+    unsigned char md[MD5_DIGEST_LENGTH];
+    MD5((const unsigned char *)pData, size, md);
+    string md5;
+    md5.append((const char *)md, MD5_DIGEST_LENGTH);
+    return md5;
+}
 
 string MakeMD5(const string &src)
 {
-    unsigned char md[MD5_DIGEST_LENGTH];
-    MD5((const unsigned char *)src.c_str(), src.size(), md);
-    string md5;
-    md5.append((const char *)md, MD5_DIGEST_LENGTH);
-    //return BinToHexString(md5, false);
-    return md5;
+    MakeMD5(src.c_str(), src.size());
 }
 
 string MakeSHA1(const string &src) {

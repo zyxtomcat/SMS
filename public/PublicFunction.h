@@ -53,6 +53,7 @@ string BinToHexString(const char* szBuf, unsigned long ulLen, bool bUpCase = tru
 string BinToHexString(const string& str, bool bUpCase = true);
 string HexStringToBin(const string& str);
 
+string MakeMD5(const char* pData, size_t size);
 string MakeMD5(const string &src);
 string MakeSHA1(const string &src);
 
