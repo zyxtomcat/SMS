@@ -204,8 +204,7 @@ U32 CMPPAgent::GetSeq() {
 void CMPPAgent::Login() {
 	CMPPConnect *login = new CMPPConnect;
 
-	//login->setSeq(GetSeq());
-	login->setSeq(2);
+	login->setSeq(GetSeq());
 	std::string src_addr = m_ISMGInfo.getISMGParamValue("SP_Id");
 	strncpy(login->source_addr, src_addr.c_str(), sizeof(login->source_addr));
 
