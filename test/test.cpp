@@ -16,7 +16,7 @@ std::string buildRequest() {
     request["content"] = content;
 
     Json::FastWriter writer;
-    return writer.write(order);
+    return writer.write(request);
 }
 
 int main(int argc, char **argv) {
@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
        std::string request = buildRequest();
        std::string response;
 
-       int res = session->SendSMS(request, response);
+       session->SendSMS(request, response);
 
        cout<<"res = "<<res<<endl;
        cout<<"orderRequest = "<<request<<endl;
