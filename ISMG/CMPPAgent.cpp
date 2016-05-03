@@ -215,9 +215,7 @@ void CMPPAgent::Login() {
 	memset(authSource, 0x00, sizeof(char)*len);
 	char *p = authSource;
 	memcpy(p, src_addr.c_str(), src_addr.size());
-	p += src_addr.size();
-	memcpy(p, 0x00, sizeof(char)*9);
-	p += 9;
+	p += src_addr.size() + 9;
 	memcpy(p, shared_secret.c_str(), shared_secret.size());
 	p += shared_secret.size();
 	memcpy(p, timestamp.c_str(), timestamp.size());
