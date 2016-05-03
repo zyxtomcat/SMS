@@ -231,7 +231,7 @@ void SASSessionI::HandleSMSSubmitResp(ISMGAgent* pAgent, SMSLog *pSMSLog, int er
 		LockerGuard lockGuard(m_lockerSMSWaitQueue);
 		std::map<U32, SMSLog*>::iterator it = m_mapSMSWaitQueue.find(pSMSLog->id);
 		if (it != m_mapSMSWaitQueue.end()) {
-			delete pSMSLog;
+			//delete pSMSLog;
 			m_mapSMSWaitQueue.erase(it);
 		}
 	} 
