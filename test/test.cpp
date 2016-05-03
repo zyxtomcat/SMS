@@ -4,7 +4,7 @@
 #include <json/json.h>
 #include <functions.h>
 
-using namespace TIGWS;
+using namespace SAS;
 
 std::string buildRequest() {
     std::string sim = "1064818830568";
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     try {
        ic = Ice::initialize(argc, argv);
        Ice::ObjectPrx base = ic->stringToProxy("SASSession:tcp -p 10006 -h 127.0.0.1");
-       TIGWSSessionPrx session = TIGWSSessionPrx::checkedCast(base);
+       SASSessionPrx session = SASSessionPrx::checkedCast(base);
        if (!session) {
            throw "Invalid proxy";
        }
