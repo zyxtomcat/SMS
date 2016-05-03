@@ -35,7 +35,6 @@ int main(int argc, char **argv) {
 
        session->SendSMS(request, response);
 
-       cout<<"res = "<<res<<endl;
        cout<<"orderRequest = "<<request<<endl;
        cout<<"orderResponse = "<<response<<endl;
 
