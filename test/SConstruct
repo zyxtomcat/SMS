@@ -15,8 +15,7 @@ env.Append(LIBS=['Ice', 'IceUtil', 'jsoncpp', 'mapgoobase', 'crypto', 'mysqlcppc
 
 sasdtest = env.Program('sasdtest', [
                                             'test.cpp', 
-                                            '../SAS.cpp',
-                                            '../public/PublicFunction.cpp'
+                                            '../SAS.cpp'
                                             ])
 
 

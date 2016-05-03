@@ -1,6 +1,5 @@
 #include <Ice/Ice.h>
 #include "SAS.h"
-#include "PublicFunction.h"
 #include <json/json.h>
 #include <functions.h>
 
