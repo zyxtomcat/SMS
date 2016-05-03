@@ -1,4 +1,4 @@
-#SConscript(['test/SConstruct'])
+SConscript(['test/SConstruct'])
             
 import os
 output = os.popen("slice2cpp --underscore -I/usr/share/slice -I./slice/ slice/SAS.ice").read()
