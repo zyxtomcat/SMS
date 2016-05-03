@@ -453,7 +453,7 @@ void CMPPAgent::Handle(CMPPConnectResp *pCMPP) {
 		char *authISMG = new char[len];
 		memset(authISMG, 0x00, sizeof(char)*len);
 		char *p = authISMG;
-		memcpy(p, pCMPP->status, sizeof(pCMPP->status));
+		memcpy(p, &pCMPP->status, sizeof(pCMPP->status));
 		p += sizeof(pCMPP->status);
 		memcpy(p, m_authSource.c_str(), m_authSource.size());
 		p += m_authSource.size();
